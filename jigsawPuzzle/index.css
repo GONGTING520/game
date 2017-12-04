@@ -1,0 +1,64 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+#answer{
+    width: 230px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: none;
+}
+#answer img{
+    width: 230px;
+}
+#content{
+    margin: 20px auto;
+    width: 462px;
+    position: relative;
+}
+#game-title{
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+}
+#game{
+    width: 462px;
+    height: 288px;
+    position: relative;
+}
+.clearfix:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+#game .game-block{
+    float: left;
+    width: 154px;
+    height: 96px;
+    overflow: hidden;
+    position: relative;
+}
+#game .game-block img{
+    position: absolute;
+    width: 462px;
+}
+#time{
+    position: absolute;
+    right: -100px;
+    top: 0;
+}
+#btn{
+    width: 240px;
+    margin: 0 auto;
+}
+#btn button{
+    width: 100px;
+    height: 30px;
+}
+#btn .show-answer{
+    margin-right: 30px;
+}
