@@ -41,7 +41,7 @@ Car.prototype.move = function () {
     }.bind(this), 50);
 };
 /**
- * 让车一直移动，添加自己的属性timer
+ * 让车停止
  * 
  */
 Car.prototype.stop = function () {
