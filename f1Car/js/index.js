@@ -1,7 +1,7 @@
 $(function () {
     var $gameContainer = $('#game-container');
     var $line = $('.line', $gameContainer);
-    var aCars = []; //定义所有的其他汽车
+    $gameContainer.aCars = []; //定义所有的其他汽车
     var oMe = new MyCar(); //定义一个我的车
     var oOthers; //定义对向的车
     //让赛道的线动起来
@@ -24,7 +24,8 @@ $(function () {
      */
     function newCar() {
         oOthers = new Car();
-        aCars.push(oOthers);
+        oOthers.move(oMe);
+        $gameContainer.aCars.push(oOthers);
     }
 
 
@@ -35,7 +36,7 @@ $(function () {
                 $(oMe.carBody).animate({
                     left: '-=200'
                 }, 500, function () {
-                    if (oMe.collision(aCars)) {
+                    if (oMe.collision($gameContainer.aCars)) {
                         gameOver();
                     }
                 });
@@ -44,7 +45,7 @@ $(function () {
                 $(oMe.carBody).animate({
                     top: '-=100'
                 }, 500, function () {
-                    if (oMe.collision(aCars)) {
+                    if (oMe.collision($gameContainer.aCars)) {
                         gameOver();
                     }
                 });
@@ -53,7 +54,7 @@ $(function () {
                 $(oMe.carBody).animate({
                     left: '+=200'
                 }, 500, function () {
-                    if (oMe.collision(aCars)) {
+                    if (oMe.collision($gameContainer.aCars)) {
                         gameOver();
                     }
                 });
@@ -62,7 +63,7 @@ $(function () {
                 $(oMe.carBody).animate({
                     top: '+=100'
                 }, 500, function () {
-                    if (oMe.collision(aCars)) {
+                    if (oMe.collision($gameContainer.aCars)) {
                         gameOver();
                     }
                 });
@@ -74,7 +75,7 @@ $(function () {
         clearInterval($gameContainer.get(0).newCarTimer);
         clearInterval($gameContainer.get(0).lineTimer);
         document.onkeyup = null;
-        $(aCars).each(function () {
+        $($gameContainer.aCars).each(function () {
             this.stop();
         });
     }
