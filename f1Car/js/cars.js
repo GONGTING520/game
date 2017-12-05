@@ -1,5 +1,6 @@
 var $gameContainer = $('#game-container');
 var $track = $('.track', $gameContainer);
+$gameContainer.aCars = []; //定义所有的其他汽车
 /**
  * 定义对向的车类
  * 
@@ -9,7 +10,7 @@ function Car() {
     this.iSpeed = 2; //移动速度
     this.bLife = true;
     this.new();
-    this.move();
+    $gameContainer.aCars.push(this);
 }
 /**
  * 创建一个对向的车
@@ -28,8 +29,9 @@ Car.prototype.new = function () {
 /**
  * 让车一直移动，添加自己的属性timer
  * 
+ * @param {object} elem 用户控制的车辆
  */
-Car.prototype.move = function () {
+Car.prototype.move = function (elem) {
     this.timer = setInterval(function () {
         this.carBody.style.top = this.carBody.offsetTop + this.iSpeed + 'px';
         if (this.carBody.offsetTop >= $gameContainer.offset().top + $gameContainer.height()) {
@@ -37,6 +39,14 @@ Car.prototype.move = function () {
             this.bLife = false;
             $(this.carBody).remove(); //移除自己
             $sum.text(parseInt($sum.text()) + 20); //增加总分          
+        }
+        if(this.collision(elem)){
+            console.log($gameContainer.aCars);
+            $($gameContainer.aCars).each(function () {
+                this.stop();
+            });
+            clearInterval($gameContainer.get(0).newCarTimer);
+            clearInterval($gameContainer.get(0).lineTimer);
         }
     }.bind(this), 50);
 };
@@ -62,4 +72,33 @@ function getPosition() {
         case 2:
             return 'right';
     }
+}
+/**
+ * 判断自己是否与用户控制的车碰撞
+ * 
+ * @param {object} elem 要判断用户控制的车辆
+ * @returns true表示有碰撞，false表示无碰撞
+ */
+Car.prototype.collision = function (elem) {
+    if (cover(this.carBody, elem.carBody)) {
+        return true;
+    }
+    return false;
+};
+/**
+ * 判断自己是否与用户控制的车辆有覆盖部分
+ * 
+ * @param {object} target 自己
+ * @param {object} elem 用户控制的车
+ * @returns true表示有覆盖，false表示无覆盖
+ */
+function cover(target, elem) {
+    var $targetPos = $(target).offset();
+    var $elemPos = $(elem).offset();
+    if (Math.abs($targetPos.left - $elemPos.left) <= $(elem).width()) {
+        if (Math.abs($targetPos.top - $elemPos.top) <= $(elem).height()) {
+            return true;
+        }
+    }
+    return false;
 }
