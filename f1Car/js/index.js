@@ -30,13 +30,13 @@ $(function () {
 
 
     document.onkeyup = function (e) {
-        // console.log(e.keyCode);
         switch (e.keyCode) {
             case 37: //left
                 $(oMe.carBody).animate({
                     left: '-=200'
                 }, 500, function () {
                     if (oMe.collision($gameContainer.aCars)) {
+                        //如果自己与对向的车碰撞，则游戏结束
                         gameOver();
                     }
                 });
@@ -46,6 +46,7 @@ $(function () {
                     top: '-=100'
                 }, 500, function () {
                     if (oMe.collision($gameContainer.aCars)) {
+                        //如果自己与对向的车碰撞，则游戏结束
                         gameOver();
                     }
                 });
@@ -55,6 +56,7 @@ $(function () {
                     left: '+=200'
                 }, 500, function () {
                     if (oMe.collision($gameContainer.aCars)) {
+                        //如果自己与对向的车碰撞，则游戏结束
                         gameOver();
                     }
                 });
@@ -64,19 +66,11 @@ $(function () {
                     top: '+=100'
                 }, 500, function () {
                     if (oMe.collision($gameContainer.aCars)) {
+                        //如果自己与对向的车碰撞，则游戏结束
                         gameOver();
                     }
                 });
                 break;
         }
     };
-
-    function gameOver() {
-        clearInterval($gameContainer.get(0).newCarTimer);
-        clearInterval($gameContainer.get(0).lineTimer);
-        document.onkeyup = null;
-        $($gameContainer.aCars).each(function () {
-            this.stop();
-        });
-    }
 });
