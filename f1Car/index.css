@@ -1,26 +1,30 @@
-.clearfix::after{
-    content:'';
+.clearfix::after {
+    content: '';
     display: block;
     clear: both;
 }
-#game-container{
+
+#game-container {
     position: relative;
     width: 608px;
     margin: 0 auto;
     border: 2px solid #777777;
     overflow: hidden;
 }
-#game-container .track{
+
+#game-container .track {
     width: 200px;
     height: 600px;
     float: left;
-    margin-left:4px;
+    margin-left: 4px;
     /*position: absolute;*/
 }
-#game-container .track:first-child{
+
+#game-container .track:first-child {
     margin-left: 0;
 }
-#game-container .line{
+
+#game-container .line {
     position: absolute;
     left: 200px;
     top: -400px;
@@ -30,38 +34,72 @@
     border-top: 0;
     border-bottom: 0;
 }
-#game-container .line:nth-child(2){
+
+#game-container .line:nth-child(2) {
     left: 404px;
 }
-#game-container .my-car{
+
+#game-container .my-car {
     width: 40px;
     height: 80px;
     position: absolute;
     z-index: 2;
-    left:285px;
+    left: 285px;
 }
-#game-container .my-car img,#game-container .enemy-car img{
+
+#game-container .my-car img,
+#game-container .enemy-car img {
     width: 40px;
     height: 80px;
 }
-#game-container .enemy-car{
+
+#game-container .enemy-car {
     width: 40px;
     height: 80px;
     position: absolute;
 }
-#game-title{
+
+#game-title {
     position: absolute;
-    left:150px;
+    left: 150px;
     top: 100px;
     width: 60px;
     font-size: 60px;
 }
-#score{
+
+#score {
     position: absolute;
-    right:200px;
+    right: 200px;
     top: 100px;
     font-size: 30px;
 }
-#score span{
+
+#score span {
     margin-left: 50px;
+}
+
+#mask {
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#mask .mask-content,
+#mask .mask-score {
+    color: #ffffff;
+    font-size: 90px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+#mask .restart {
+    width: 200px;
+    height: 50px;
+    display: block;
+    margin: 50px auto;
+    font-size: 30px;
 }
