@@ -32,44 +32,64 @@ $(function () {
     document.onkeyup = function (e) {
         switch (e.keyCode) {
             case 37: //left
-                $(oMe.carBody).animate({
-                    left: '-=200'
-                }, 500, function () {
-                    if (oMe.collision($gameContainer.aCars)) {
-                        //如果自己与对向的车碰撞，则游戏结束
-                        gameOver();
-                    }
-                });
+                if ($(oMe.carBody).offset().left - 200 <= $gameContainer.offset().left) {
+                    null;
+                } else {
+                    $(oMe.carBody).animate({
+                        left: '-=200'
+                    }, 500, function () {
+                        if (oMe.collision($gameContainer.aCars)) {
+                            //如果自己与对向的车碰撞，则游戏结束
+                            gameOver(oMe);
+                        }
+                    });
+                }
                 break;
             case 38: //up
-                $(oMe.carBody).animate({
-                    top: '-=100'
-                }, 500, function () {
-                    if (oMe.collision($gameContainer.aCars)) {
-                        //如果自己与对向的车碰撞，则游戏结束
-                        gameOver();
-                    }
-                });
+                if ($(oMe.carBody).offset().top - 100 <= $gameContainer.offset().top) {
+                    null;
+                } else {
+                    $(oMe.carBody).animate({
+                        top: '-=100'
+                    }, 500, function () {
+                        if (oMe.collision($gameContainer.aCars)) {
+                            //如果自己与对向的车碰撞，则游戏结束
+                            gameOver(oMe);
+                        }
+                    });
+                }
                 break;
             case 39: //right
-                $(oMe.carBody).animate({
-                    left: '+=200'
-                }, 500, function () {
-                    if (oMe.collision($gameContainer.aCars)) {
-                        //如果自己与对向的车碰撞，则游戏结束
-                        gameOver();
-                    }
-                });
+                var iMeRight = $(oMe.carBody).offset().left + oMe.carBody.offsetWidth;
+                var iContainerRight = $gameContainer.offset().left + $gameContainer.width();
+                if (iMeRight + 200 >= iContainerRight) {
+                    null;
+                } else {
+                    $(oMe.carBody).animate({
+                        left: '+=200'
+                    }, 500, function () {
+                        if (oMe.collision($gameContainer.aCars)) {
+                            //如果自己与对向的车碰撞，则游戏结束
+                            gameOver(oMe);
+                        }
+                    });
+                }
                 break;
             case 40: //down
-                $(oMe.carBody).animate({
-                    top: '+=100'
-                }, 500, function () {
-                    if (oMe.collision($gameContainer.aCars)) {
-                        //如果自己与对向的车碰撞，则游戏结束
-                        gameOver();
-                    }
-                });
+                var iMeBottom = $(oMe.carBody).offset().top + oMe.carBody.offsetHeight;
+                var iContainerBottom = $gameContainer.offset().top + $gameContainer.height();
+                if (iMeBottom + 100 >= iContainerBottom) {
+                    null;
+                } else {
+                    $(oMe.carBody).animate({
+                        top: '+=100'
+                    }, 500, function () {
+                        if (oMe.collision($gameContainer.aCars)) {
+                            //如果自己与对向的车碰撞，则游戏结束
+                            gameOver(oMe);
+                        }
+                    });
+                }
                 break;
         }
     };
