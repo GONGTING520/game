@@ -17,7 +17,7 @@ function Car() {
  * 
  */
 Car.prototype.new = function () {
-    this.carBody = $('<div class="enemy-car"></div>').css('top', -80).get(0);
+    this.carBody = $('<div class="enemy-car"><img src="img/F2.png"/></div>').css('top', -80).get(0);
     if (this.sPosition === 'left') {
         $(this.carBody).appendTo($track.eq(0)).css('left', 85);
     } else if (this.sPosition === 'center') {
@@ -40,13 +40,10 @@ Car.prototype.move = function (elem) {
             $(this.carBody).remove(); //移除自己
             $sum.text(parseInt($sum.text()) + 20); //增加总分          
         }
-        if(this.collision(elem)){
-            console.log($gameContainer.aCars);
-            $($gameContainer.aCars).each(function () {
-                this.stop();
-            });
-            clearInterval($gameContainer.get(0).newCarTimer);
-            clearInterval($gameContainer.get(0).lineTimer);
+        if (this.collision(elem)) {
+            //如果自己与用户控制的车碰撞，则游戏结束
+            gameOver();
+            alert('YOU LOSE!');
         }
     }.bind(this), 50);
 };
@@ -56,6 +53,18 @@ Car.prototype.move = function (elem) {
  */
 Car.prototype.stop = function () {
     clearInterval(this.timer);
+};
+/**
+ * 判断自己是否与用户控制的车碰撞
+ * 
+ * @param {object} elem 要判断用户控制的车辆
+ * @returns true表示有碰撞，false表示无碰撞
+ */
+Car.prototype.collision = function (elem) {
+    if (cover(this.carBody, elem.carBody)) {
+        return true;
+    }
+    return false;
 };
 /**
  * 获取车的位置
@@ -74,18 +83,6 @@ function getPosition() {
     }
 }
 /**
- * 判断自己是否与用户控制的车碰撞
- * 
- * @param {object} elem 要判断用户控制的车辆
- * @returns true表示有碰撞，false表示无碰撞
- */
-Car.prototype.collision = function (elem) {
-    if (cover(this.carBody, elem.carBody)) {
-        return true;
-    }
-    return false;
-};
-/**
  * 判断自己是否与用户控制的车辆有覆盖部分
  * 
  * @param {object} target 自己
@@ -101,4 +98,16 @@ function cover(target, elem) {
         }
     }
     return false;
+}
+/**
+ * 游戏结束，让所有定时器停止，包括赛道线，生成新的对向车，每辆车的定时器
+ * 
+ */
+function gameOver() {
+    clearInterval($gameContainer.get(0).newCarTimer);
+    clearInterval($gameContainer.get(0).lineTimer);
+    $($gameContainer.aCars).each(function () {
+        this.stop();
+    });
+    document.onkeyup = null;
 }
