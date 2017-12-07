@@ -103,3 +103,9 @@
     margin: 50px auto;
     font-size: 30px;
 }
+#author{
+    font-size: 20px;
+    position: absolute;
+    left: 100px;
+    bottom: 150px;
+}
