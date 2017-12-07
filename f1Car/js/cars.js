@@ -1,5 +1,8 @@
 var $gameContainer = $('#game-container');
 var $track = $('.track', $gameContainer);
+var oLose = new Layout({
+    content: 'YOU LOSE!'
+}); //定义游戏结束的遮罩层
 $gameContainer.aCars = []; //定义所有的其他汽车
 /**
  * 定义对向的车类
@@ -42,8 +45,8 @@ Car.prototype.move = function (elem) {
         }
         if (this.collision(elem)) {
             //如果自己与用户控制的车碰撞，则游戏结束
-            gameOver();
-            alert('YOU LOSE!');
+            gameOver(elem);
+            oLose.show();
         }
     }.bind(this), 50);
 };
@@ -101,13 +104,16 @@ function cover(target, elem) {
 }
 /**
  * 游戏结束，让所有定时器停止，包括赛道线，生成新的对向车，每辆车的定时器
+ * 并让用户的车停止所有动画
  * 
+ * @param {object} elem 用户控制的车
  */
-function gameOver() {
+function gameOver(elem) {
     clearInterval($gameContainer.get(0).newCarTimer);
     clearInterval($gameContainer.get(0).lineTimer);
     $($gameContainer.aCars).each(function () {
         this.stop();
     });
+    $(elem).stop(true, true); //清空动画队列，动画立即完成
     document.onkeyup = null;
 }
