@@ -37,7 +37,7 @@ function Common() {
     // this.bLeftMovable = true; //记录能否左移动
     // this.bRightMovable = true; //记录能否右移动
     this.bMovable = true; //记录是否存活
-    this.speed = 500;
+    this.speed = 1000;
     for (var i = 0; i < 4; i++) { //定义四个小方块
         this.aDiv.push($('<div></div>').get(0));
         this.aDiv[i].style.width = this.iWidth + 'px';
@@ -70,25 +70,24 @@ Common.prototype.collisionBottom = function () {
     return bFlag;
 };
 /**
- * 定义一个检测自身能否与arr中其他元素碰撞而停止的方法
+ * 定义一个检测自身的下一个状态next与数组中元素target能否碰撞方法
  * 
- * @param {Array} arr 表示判断arr中所有的原生对象是否与自身碰撞
- * @return bFlag 表示是否停止，true表示停止，false表示不停止
+ * @param {Array} next 表示自身下一个状态每一个方块的位置信息数组
+ * @param {object} target 表示数组中的元素
+ * @return bFlag 表示是否碰撞，true表示碰撞，false表示不碰撞
  */
-Common.prototype.collisionArrElem = function (arr) {
-    var bFlag = false;
-    var oThis = this; //当前下落的方块
-    $(arr.aDiv).each(function (index, elem) {
-        var iArrElemTop = elem.offsetTop;
-        // 让每个div方块去比较当前下落的对象的每一个div
-        for (var i = 0; i < oThis.aDiv.length; i++) {
-            var iDownBottom = oThis.aDiv[i].offsetTop + $(oThis.aDiv[i]).height();
-            if (iDownBottom >= iArrElemTop) {
-                bFlag = true;
+Common.prototype.cover = function (next, target) {
+    for (var i = 0; i < next.length; i++) {
+        // 让target总每个div方块去比较下一个状态中的位置
+        for (var j = 0; j < target.aDiv.length; j++) {
+            if (Math.abs(next[i].top - target.aDiv[j].offsetTop) < target.iWidth) {
+                if (Math.abs(next[i].left - target.aDiv[j].offsetLeft) < target.iWidth) {
+                    return true;
+                }
             }
         };
-    });
-    return bFlag;
+    }
+    return false;
 };
 
 
