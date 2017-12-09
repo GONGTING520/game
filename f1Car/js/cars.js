@@ -54,7 +54,7 @@ Car.prototype.move = function (elem) {
  * 让车停止
  * 
  */
-Car.prototype.stop = function () {
+Car.prototype.stopCar = function () {
     clearInterval(this.timer);
 };
 /**
@@ -112,7 +112,7 @@ function gameOver(elem) {
     clearInterval($gameContainer.get(0).newCarTimer);
     clearInterval($gameContainer.get(0).lineTimer);
     $($gameContainer.aCars).each(function () {
-        this.stop();
+        this.stopCar();
     });
     $(elem).stop(true, true); //清空动画队列，动画立即完成
     document.onkeyup = null;
