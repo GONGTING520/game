@@ -40,7 +40,7 @@ $(function () {
                     }, 500, function () {
                         if (oMe.collision($gameContainer.aCars)) {
                             //如果自己与对向的车碰撞，则游戏结束
-                            gameOver(oMe);
+                            gameOver(oMe.carBody);
                         }
                     });
                 }
@@ -54,7 +54,7 @@ $(function () {
                     }, 500, function () {
                         if (oMe.collision($gameContainer.aCars)) {
                             //如果自己与对向的车碰撞，则游戏结束
-                            gameOver(oMe);
+                            gameOver(oMe.carBody);
                         }
                     });
                 }
@@ -70,7 +70,7 @@ $(function () {
                     }, 500, function () {
                         if (oMe.collision($gameContainer.aCars)) {
                             //如果自己与对向的车碰撞，则游戏结束
-                            gameOver(oMe);
+                            gameOver(oMe.carBody);
                         }
                     });
                 }
@@ -86,7 +86,7 @@ $(function () {
                     }, 500, function () {
                         if (oMe.collision($gameContainer.aCars)) {
                             //如果自己与对向的车碰撞，则游戏结束
-                            gameOver(oMe);
+                            gameOver(oMe.carBody);
                         }
                     });
                 }
