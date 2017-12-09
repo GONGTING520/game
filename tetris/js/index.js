@@ -2,6 +2,8 @@ $(function () {
     var $game = $('#game');
     var $gameNext = $('.next', $game);
     var $gameContent = $('.game-content', $game);
+    // 定义最小的top，判断是否满一行时，只需比较大于iMinTop的方块
+    $gameContent.iMinTop = $gameContent.height();
     var aTetris = []; //表示已经下落停止的方块数组
     var first = newTetris();
     var now = first; //当前下落的方块
@@ -10,6 +12,32 @@ $(function () {
     var $next = $(oNext.aDiv).clone();
     addNext($next);
 
+
+    /**
+     * 定义一个定时器，让now一直下落，当碰到其他方块或底部时停止
+     *
+     */
+    function fallDown() {
+        now.timer = setInterval(function () {
+            if (collision('top', now.iWidth) || now.collisionBottom()) {
+                clearInterval(now.timer);
+                now.bMovable = false;
+                aTetris.push(now);
+                //修改最小top
+                for (var i = 0; i < now.aDiv.length; i++) {
+                    if ($gameContent.iMinTop > now.aDiv[i].offsetTop) {
+                        $gameContent.iMinTop = now.aDiv[i].offsetTop;
+                    }
+                }
+                //使用判断清除一行的函数
+                for (var iTop = $gameContent.iMinTop; iTop < $gameContent.height(); iTop = iTop + 30) {
+                    judgeFullLine(iTop);
+                }
+                toggleNowAndNext();
+            }
+            now.fallOne();
+        }, now.speed);
+    }
     /**
      * 拷贝传入的对象，在下一个位置上，插入这个表示下一个会出现的方块的对象
      *
@@ -24,20 +52,43 @@ $(function () {
         });
         $gameNext.append(next);
     }
+
+    // function () {}
+
+    function judgeFullLine(iTop) {
+        var aLine = []; //top为iTop的小方块的数组
+        // 循环所有已下落方块的数组
+        for (var i = 0; i < aTetris.length; i++) {
+            // 循环每个方块中的小方块
+            for (var j = 0; j < aTetris[i].aDiv.length; j++) {
+                // 如果小方块的top等于iTop
+                console.log($(aTetris[i].aDiv[j]).position().top);
+                if ($(aTetris[i].aDiv[j]).position().top === iTop) {
+                    aLine.push(aTetris[i].aDiv[j]);
+                }
+            }
+        }
+        if (aLine.length == 10) {
+            clearLine(aLine); //清除这一行
+            //让top小于iTop的下落
+        }
+    }
+
+    function clearLine(arr) {
+        $(arr).each(function () {
+            $(this).remove();
+        });
+    }
     /**
-     * 定义一个定时器，让now一直下落，当碰到其他方块或底部时停止
+     * 切换当前控制的元素和下一个方块元素
      *
      */
-    function fallDown() {
-        now.timer = setInterval(function () {
-            if (collision('top', now.iWidth) || now.collisionBottom()) {
-                clearInterval(now.timer);
-                now.bMovable = false;
-                aTetris.push(now);
-                toggleNowAndNext();
-            }
-            now.fallOne();
-        }, now.speed);
+    function toggleNowAndNext() {
+        now = oNext;
+        fallDown();
+        oNext = newTetris();
+        $next = $(oNext.aDiv).clone();
+        addNext($next);
     }
     /**
      * 判断正在下落的对象的下一个位置与已经下落完毕
@@ -62,17 +113,7 @@ $(function () {
         }
         return false;
     }
-    /**
-     * 切换当前控制的元素和下一个方块元素
-     *
-     */
-    function toggleNowAndNext() {
-        now = oNext;
-        fallDown();
-        oNext = newTetris();
-        $next = $(oNext.aDiv).clone();
-        addNext($next);
-    }
+
     /**
      * 判断元素elem是否超出左右边界
      *
