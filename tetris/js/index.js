@@ -1,6 +1,7 @@
 $(function () {
     var $game = $('#game');
     var $gameNext = $('.next', $game);
+    var $score = $('.game-info span', $game).eq(1);
     var $gameContent = $('.game-content', $game);
     // 定义最小的top，判断是否满一行时，只需比较大于iMinTop的方块
     $gameContent.iMinTop = $gameContent.height();
@@ -19,25 +20,42 @@ $(function () {
      */
     function fallDown() {
         now.timer = setInterval(function () {
+            //若正在下落的方块碰到其他方块或底部
             if (collision('top', now.iWidth) || now.collisionBottom()) {
-                clearInterval(now.timer);
-                now.bMovable = false;
-                aTetris.push(now);
-                //修改最小top
-                for (var i = 0; i < now.aDiv.length; i++) {
-                    if ($gameContent.iMinTop > now.aDiv[i].offsetTop) {
-                        $gameContent.iMinTop = now.aDiv[i].offsetTop;
-                    }
-                }
-                //使用判断清除一行的函数
-                for (var iTop = $gameContent.iMinTop; iTop < $gameContent.height(); iTop = iTop + 30) {
-                    judgeFullLine(iTop);
-                }
-                removeAtetrisElem();
-                toggleNowAndNext();
+                stopNow();
+            } else {
+                now.fallOne();
             }
-            now.fallOne();
         }, now.speed);
+    }
+
+    function stopNow() {
+        clearInterval(now.timer);
+        now.bMovable = false;
+        aTetris.push(now);
+        //总分加5
+        $score.html(parseInt($score.html()) + 5);
+        //修改最小top
+        for (var i = 0; i < now.aDiv.length; i++) {
+            if ($gameContent.iMinTop > now.aDiv[i].offsetTop) {
+                $gameContent.iMinTop = now.aDiv[i].offsetTop;
+            }
+        }
+        //使用判断清除一行的函数
+        for (var iTop = $gameContent.iMinTop; iTop < $gameContent.height(); iTop = iTop + 30) {
+            judgeFullLine(iTop);
+        }
+        removeAtetrisElem();
+        if ($gameContent.iMinTop <= 0) {
+            var settings = {
+                content: 'YOU LOSE!',
+                score: $score.html()
+            }
+            var oLose = new Layout(settings); //定义遮罩层
+            oLose.show();
+        } else {
+            toggleNowAndNext();
+        }
     }
     /**
      * 拷贝传入的对象，在下一个位置上，插入这个表示下一个会出现的方块的对象
@@ -60,14 +78,19 @@ $(function () {
      */
     function removeAtetrisElem() {
         var aIndex = [];
+        var bFlag = false;//true表示需要清除第i个元素，false表示不需要清除
         //因为每次删除元素，元素的位置会改变，所以要从后往前删
         for (var i = 0; i < aTetris.length; i++) {
+            bFlag = false;
             for (var j = 0; j < aTetris[i].aDiv.length; j++) {
-                if (aTetris[i].aDiv[j] != 0) {
-                    continue;
+                if (typeof aTetris[i].aDiv[j] === 'object') {
+                    break;
                 }
+                bFlag = true;
             }
-            aIndex.push(i);
+            if (bFlag) {
+                aIndex.push(i);
+            }
         }
         for (var i = aIndex.length - 1; i >= 0; i--) {
             aTetris.splice(aIndex[i], 1);
@@ -99,8 +122,23 @@ $(function () {
         }
         if (aLine.length == 10) {
             clearLine(aLine); //清除这一行
+            //修改最小的top
+            $gameContent.iMinTop += now.iWidth;
             //让top小于iTop的下落
+            lessThanITopFallOne(iTop);
+            //总分加20
+            $score.html(parseInt($score.html()) + 20);
         }
+    }
+
+    function lessThanITopFallOne(iTop) {
+        $(aTetris).each(function () {
+            $(this.aDiv).each(function () {
+                if (this.offsetTop < iTop) {
+                    this.style.top = this.offsetTop + this.offsetWidth + 'px';
+                }
+            });
+        });
     }
     /**
      * 清除arr中元素的dom结构和在数组中的结构
@@ -215,19 +253,15 @@ $(function () {
                     }
                     break;
                 case 40: //下
-                    if (!now.collisionBottom()) {
+                    // 如果底部与其他方块碰撞或与底部碰撞
+                    if (collision('top', now.iWidth) || now.collisionBottom()) {
+                        stopNow();
+                    } else {
                         $(now.aDiv).each(function (index, elem) {
                             $(this).css({
                                 top: '+=' + $(elem).height()
                             });
                         });
-                    }
-                    // 如果底部与其他方块碰撞或与底部碰撞
-                    if (collision('top', now.iWidth) || now.collisionBottom()) {
-                        clearInterval(now.timer);
-                        now.bMovable = false;
-                        aTetris.push(now);
-                        toggleNowAndNext();
                     }
                     break;
             }
