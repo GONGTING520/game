@@ -5,7 +5,8 @@ var $gameContent = $('#game .game-content');
  * @returns 生成的方块对象
  */
 function newTetris() {
-    var i = getRandom(0, 4);
+    // var i = getRandom(0, 4);
+    var i = 0;
     var oTetris; //表示要生成的方块
     switch (i) {
         case 0:
@@ -34,12 +35,11 @@ function newTetris() {
 function Common() {
     this.iWidth = $gameContent.width() / 10;
     this.aDiv = [];
-    // this.bLeftMovable = true; //记录能否左移动
-    // this.bRightMovable = true; //记录能否右移动
     this.bMovable = true; //记录是否存活
     this.speed = 1000;
+    this.transfigurationDirction = 'up';
     for (var i = 0; i < 4; i++) { //定义四个小方块
-        this.aDiv.push($('<div></div>').get(0));
+        this.aDiv.push($('<div data-index="' + i + '"></div>').get(0));
         this.aDiv[i].style.width = this.iWidth + 'px';
         this.aDiv[i].style.height = this.iWidth + 'px';
     }
@@ -90,6 +90,24 @@ Common.prototype.cover = function (next, target) {
     return false;
 };
 
+Common.prototype.transfiguration = function () {
+    switch (this.transfigurationDirction) {
+        case 'up':
+            this.transfigurationRight(); //变成朝右
+            break;
+        case 'down':
+            this.transfigurationLeft(); //变成朝左
+            break;
+        case 'left':
+            this.transfigurationUp(); //变成朝上
+            break;
+        case 'right':
+            this.transfigurationDown(); //变成朝下
+            break;
+    }
+};
+
+
 
 // 生成一个形状类似于7的方块
 function Seven() {
@@ -114,6 +132,20 @@ function Seven() {
 }
 Seven.prototype = new Common(); //继承方法
 Seven.prototype.constructor = Seven; //将构造函数改为自己
+Seven.prototype.transfigurationDown = function () {
+    this.transfigurationDirction = 'down';
+};
+Seven.prototype.transfigurationUp = function () {
+    this.transfigurationDirction = 'up';
+};
+Seven.prototype.transfigurationLeft = function () {
+    this.transfigurationDirction = 'left';
+};
+Seven.prototype.transfigurationRight = function () {
+    this.transfigurationDirction = 'right';
+    var $pos = this.aDiv[2].position();
+    $pos.iWidth = this.iWidth;
+};
 
 
 
@@ -139,6 +171,12 @@ function Diamond() {
 }
 Diamond.prototype = new Common(); //继承方法
 Diamond.prototype.constructor = Diamond; //将构造函数改为自己
+Diamond.prototype.transfigurationDown =
+    Diamond.prototype.transfigurationUp =
+    Diamond.prototype.transfigurationLeft =
+    Diamond.prototype.transfigurationRight = function () {
+        null;
+    };
 
 
 // 生成一个类似闪电形状或“z形”的方块
@@ -164,6 +202,12 @@ function DiamondZ() {
 }
 DiamondZ.prototype = new Common(); //继承方法
 DiamondZ.prototype.constructor = DiamondZ; //将构造函数改为自己
+DiamondZ.prototype.transfigurationDown =
+    DiamondZ.prototype.transfigurationUp =
+    DiamondZ.prototype.transfigurationLeft =
+    DiamondZ.prototype.transfigurationRight = function () {
+        console.log(this);
+    };
 
 
 // 生成一个类似三角形状的方块
@@ -188,6 +232,67 @@ function Triangle() {
 }
 Triangle.prototype = new Common(); //继承方法
 Triangle.prototype.constructor = Triangle; //将构造函数改为自己
+Triangle.prototype.transfigurationDown = function () {
+    this.transfigurationDirction = 'down';
+    var $pos = $(this.aDiv[2]).position();
+    $pos.iWidth = this.iWidth;
+    $(this.aDiv[0]).css({
+        left: $pos.left,
+        top: $pos.top + $pos.iWidth
+    });
+    for (var i = -1; i <= 1; i++) {
+        $(this.aDiv[i + 2]).css({
+            left: $pos.left + $pos.iWidth * i,
+            top: $pos.top
+        });
+    }
+};
+Triangle.prototype.transfigurationUp = function () {
+    this.transfigurationDirction = 'up';
+    var $pos = $(this.aDiv[2]).position();
+    $pos.iWidth = this.iWidth;
+    $(this.aDiv[0]).css({
+        left: $pos.left,
+        top: $pos.top - $pos.iWidth
+    });
+    for (var i = -1; i <= 1; i++) {
+        $(this.aDiv[i + 2]).css({
+            left: $pos.left + $pos.iWidth * i,
+            top: $pos.top
+        });
+    }
+};
+Triangle.prototype.transfigurationLeft = function () {
+    this.transfigurationDirction = 'left';
+    var $pos = $(this.aDiv[2]).position();
+    $pos.iWidth = this.iWidth;
+    $(this.aDiv[0]).css({
+        left: $pos.left - $pos.iWidth,
+        top: $pos.top
+    });
+    for (var i = -1; i <= 1; i++) {
+        $(this.aDiv[i + 2]).css({
+            left: $pos.left,
+            top: $pos.top + $pos.iWidth * i
+        });
+    }
+
+};
+Triangle.prototype.transfigurationRight = function () {
+    this.transfigurationDirction = 'right';
+    var $pos = $(this.aDiv[2]).position();
+    $pos.iWidth = this.iWidth;
+    $(this.aDiv[0]).css({
+        left: $pos.left + $pos.iWidth,
+        top: $pos.top
+    });
+    for (var i = -1; i <= 1; i++) {
+        $(this.aDiv[i + 2]).css({
+            left: $pos.left,
+            top: $pos.top - $pos.iWidth * i
+        });
+    }
+};
 
 
 
@@ -206,3 +311,32 @@ function Line() {
 }
 Line.prototype = new Common(); //继承方法
 Line.prototype.constructor = Line; //将构造函数改为自己
+Line.prototype.transfigurationDown =
+    Line.prototype.transfigurationUp = function () {
+        this.transfigurationDirction = 'up';
+        var $pos = $(this.aDiv[1]).position();
+        $pos.iWidth = this.iWidth;
+        for (var i = -1; i <= 2; i++) {
+            $(this.aDiv[i + 1]).css({
+                left: $pos.left,
+                top: $pos.top + $pos.iWidth * i
+            });
+        }
+    };
+Line.prototype.transfigurationLeft =
+    Line.prototype.transfigurationRight = function () {
+        this.transfigurationDirction = 'right';
+        var $pos = $(this.aDiv[1]).position();
+        $pos.iWidth = this.iWidth;
+        console.log($pos);
+        for (var i = -1; i <= 2; i++) {
+            console.log({
+                left: $pos.left + $pos.iWidth * i,
+                top: $pos.top
+            });
+            $(this.aDiv[i + 1]).css({
+                left: $pos.left + $pos.iWidth * i,
+                top: $pos.top
+            });
+        }
+    };
