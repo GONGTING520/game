@@ -55,3 +55,16 @@ body {
     right: -150px;
     top: 30px;
 }
+
+.game-name{
+    position: absolute;
+    font-size: 50px;
+    left: 100px;
+    top: 150px;
+}
+.author{
+    position: absolute;
+    font-size: 30px;
+    top: 300px;
+    left: 150px;
+}
