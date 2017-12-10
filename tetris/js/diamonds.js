@@ -134,17 +134,109 @@ Seven.prototype = new Common(); //继承方法
 Seven.prototype.constructor = Seven; //将构造函数改为自己
 Seven.prototype.transfigurationDown = function () {
     this.transfigurationDirction = 'down';
+    var $pos = $(this.aDiv[1]).position();
+    $pos.iWidth = this.iWidth;
+    if (this.sDirction === 'left') {
+        $(this.aDiv[0]).css({
+            left: $pos.left - $pos.iWidth,
+            top: $pos.top + $pos.iWidth
+        });
+        for (var i = -1; i <= 1; i++) {
+            $(this.aDiv[i + 2]).css({
+                left: $pos.left,
+                top: $pos.top - $pos.iWidth * i
+            });
+        }
+    } else {
+        $(this.aDiv[0]).css({
+            left: $pos.left,
+            top: $pos.top
+        });
+        for (var i = 0; i <= 2; i++) {
+            $(this.aDiv[i + 1]).css({
+                left: $pos.left - $pos.iWidth,
+                top: $pos.top - $pos.iWidth * i
+            });
+        }
+    }
 };
 Seven.prototype.transfigurationUp = function () {
     this.transfigurationDirction = 'up';
+    var $pos = $(this.aDiv[2]).position();
+    $pos.iWidth = this.iWidth;
+    if (this.sDirction === 'left') {
+        $(this.aDiv[0]).css({
+            left: $pos.left + $pos.iWidth,
+            top: $pos.top - $pos.iWidth
+        });
+        for (var i = -1; i <= 1; i++) {
+            $(this.aDiv[i + 2]).css({
+                left: $pos.left,
+                top: $pos.top + $pos.iWidth * i
+            });
+        }
+    } else {
+        $(this.aDiv[0]).css({
+            left: $pos.left - $pos.iWidth,
+            top: $pos.top - $pos.iWidth
+        });
+        for (var i = -1; i <= 1; i++) {
+            $(this.aDiv[i + 2]).css({
+                left: $pos.left,
+                top: $pos.top + $pos.iWidth * i
+            });
+        }
+    }
 };
 Seven.prototype.transfigurationLeft = function () {
     this.transfigurationDirction = 'left';
+    var $pos = $(this.aDiv[1]).position();
+    $pos.iWidth = this.iWidth;
+    if (this.sDirction === 'left') {
+        $(this.aDiv[0]).css({
+            left: $pos.left - $pos.iWidth * 2,
+            top: $pos.top - $pos.iWidth
+        });
+        for (var i = -2; i <= 0; i++) {
+            $(this.aDiv[i + 3]).css({
+                left: $pos.left + $pos.iWidth * i,
+                top: $pos.top
+            });
+        }
+    } else {
+        $(this.aDiv[0]).css({
+            left: $pos.left - $pos.iWidth,
+            top: $pos.top
+        });
+        for (var i = -1; i <= 1; i++) {
+            $(this.aDiv[i + 2]).css({
+                left: $pos.left + $pos.iWidth * i,
+                top: $pos.top - $pos.iWidth
+            });
+        }
+    }
 };
 Seven.prototype.transfigurationRight = function () {
     this.transfigurationDirction = 'right';
-    var $pos = this.aDiv[2].position();
+    var $pos = $(this.aDiv[2]).position();
     $pos.iWidth = this.iWidth;
+    if (this.sDirction === 'left') {
+        $(this.aDiv[0]).css({
+            left: $pos.left + $pos.iWidth,
+            top: $pos.top + $pos.iWidth
+        });
+    } else {
+        $(this.aDiv[0]).css({
+            left: $pos.left + $pos.iWidth,
+            top: $pos.top - $pos.iWidth
+        });
+    }
+    for (var i = -1; i <= 1; i++) {
+        $(this.aDiv[i + 2]).css({
+            left: $pos.left - $pos.iWidth * i,
+            top: $pos.top
+        });
+    }
 };
 
 
