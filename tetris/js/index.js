@@ -33,6 +33,7 @@ $(function () {
                 for (var iTop = $gameContent.iMinTop; iTop < $gameContent.height(); iTop = iTop + 30) {
                     judgeFullLine(iTop);
                 }
+                removeAtetrisElem();
                 toggleNowAndNext();
             }
             now.fallOne();
@@ -52,9 +53,32 @@ $(function () {
         });
         $gameNext.append(next);
     }
-
-    // function () {}
-
+    /**
+     * 判断aTetris数组中的对象中的小方块是否都清除，
+     * 若都清除了则清除这个对象
+     * 
+     */
+    function removeAtetrisElem() {
+        var aIndex = [];
+        //因为每次删除元素，元素的位置会改变，所以要从后往前删
+        for (var i = 0; i < aTetris.length; i++) {
+            for (var j = 0; j < aTetris[i].aDiv.length; j++) {
+                if (aTetris[i].aDiv[j] != 0) {
+                    continue;
+                }
+            }
+            aIndex.push(i);
+        }
+        for (var i = aIndex.length - 1; i >= 0; i--) {
+            aTetris.splice(aIndex[i], 1);
+        }
+    }
+    /**
+     * 判断top=iTop的方块数是否够10，够则清除这些方块，
+     * 调用clearLine函数，并让所有top<iTop的方块下落一格
+     * 
+     * @param {number} iTop 
+     */
     function judgeFullLine(iTop) {
         var aLine = []; //top为iTop的小方块的数组
         // 循环所有已下落方块的数组
@@ -62,9 +86,14 @@ $(function () {
             // 循环每个方块中的小方块
             for (var j = 0; j < aTetris[i].aDiv.length; j++) {
                 // 如果小方块的top等于iTop
-                console.log($(aTetris[i].aDiv[j]).position().top);
-                if ($(aTetris[i].aDiv[j]).position().top === iTop) {
-                    aLine.push(aTetris[i].aDiv[j]);
+                var oDiv = aTetris[i].aDiv[j];
+                if (oDiv != 0) {
+                    if ($(oDiv).position().top === iTop) {
+                        aLine.push({
+                            fatherIndex: i,
+                            elem: aTetris[i].aDiv[j]
+                        });
+                    }
                 }
             }
         }
@@ -73,10 +102,15 @@ $(function () {
             //让top小于iTop的下落
         }
     }
-
+    /**
+     * 清除arr中元素的dom结构和在数组中的结构
+     * 
+     * @param {array} arr 表示要清除的元素
+     */
     function clearLine(arr) {
         $(arr).each(function () {
-            $(this).remove();
+            $(this.elem).remove();
+            aTetris[this.fatherIndex].aDiv.splice($(this.elem).data('index'), 1, 0);
         });
     }
     /**
