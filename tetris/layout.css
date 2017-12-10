@@ -1,0 +1,25 @@
+#mask {
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#mask .mask-content,
+#mask .mask-score {
+    color: #ffffff;
+    font-size: 90px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+#mask .restart {
+    width: 200px;
+    height: 50px;
+    display: block;
+    margin: 50px auto;
+    font-size: 30px;
+}
