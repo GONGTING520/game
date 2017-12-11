@@ -10,7 +10,7 @@ $gameContainer.aCars = []; //定义所有的其他汽车
  */
 function Car() {
     this.sPosition = getPosition();
-    this.iSpeed = 4; //移动速度
+    this.iSpeed = 6; //移动速度
     this.bLife = true;
     this.new();
     $gameContainer.aCars.push(this);
