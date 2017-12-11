@@ -28,7 +28,12 @@ $(function () {
             }
         }, now.speed);
     }
-
+    /**
+     * 停止now的定时器，并将now.bMovable置为false，将now加入数组，
+     * 修改总分和最小top，判断能否清除一行，再判断是否失败，
+     * 若未失败，则切换下一个
+     * 
+     */
     function stopNow() {
         clearInterval(now.timer);
         now.bMovable = false;
@@ -78,15 +83,15 @@ $(function () {
      */
     function removeAtetrisElem() {
         var aIndex = [];
-        var bFlag = false;//true表示需要清除第i个元素，false表示不需要清除
+        var bFlag = true; //true表示需要清除第i个元素，false表示不需要清除
         //因为每次删除元素，元素的位置会改变，所以要从后往前删
         for (var i = 0; i < aTetris.length; i++) {
-            bFlag = false;
+            bFlag = true;
             for (var j = 0; j < aTetris[i].aDiv.length; j++) {
                 if (typeof aTetris[i].aDiv[j] === 'object') {
+                    bFlag = false;
                     break;
                 }
-                bFlag = true;
             }
             if (bFlag) {
                 aIndex.push(i);
@@ -130,7 +135,11 @@ $(function () {
             $score.html(parseInt($score.html()) + 20);
         }
     }
-
+    /**
+     * 让top<iTop的所有小方块都下落一格
+     * 
+     * @param {number} iTop 
+     */
     function lessThanITopFallOne(iTop) {
         $(aTetris).each(function () {
             $(this.aDiv).each(function () {
@@ -212,6 +221,33 @@ $(function () {
         return bFlag;
     }
 
+    /**
+     * 判断变形后是否超过边界，或者碰到其他元素
+     * 
+     */
+    function transfigurationOverEdge() {
+        var iRight = $gameContent.position().left + $gameContent.width();
+        // 如果变形后超过左右边界,碰到其他元素或者碰到底部
+        if (overEdge(now.aDiv, $gameContent.position().left - now.iWidth, 'left') ||
+            overEdge(now.aDiv, iRight, 'right') || collision('top', 0) ||
+            now.collisionBottom()) {
+            switch (now.transfigurationDirction) {
+                case 'up':
+                    now.transfigurationLeft(); //变成朝左
+                    break;
+                case 'down':
+                    now.transfigurationRight(); //变成朝右
+                    break;
+                case 'left':
+                    now.transfigurationDown(); //变成朝下
+                    break;
+                case 'right':
+                    now.transfigurationUp(); //变成朝上
+                    break;
+            }
+        }
+    }
+
     document.onkeydown = function (e) {
         // now活着
         if (now.bMovable) {
@@ -233,7 +269,8 @@ $(function () {
                     }
                     break;
                 case 38: //上
-                    console.log('up');
+                    now.transfiguration();
+                    transfigurationOverEdge();
                     break;
                 case 39: //右
                     // 如果没与右边界碰撞
