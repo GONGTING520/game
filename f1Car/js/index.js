@@ -1,6 +1,10 @@
 $(function () {
     var $gameContainer = $('#game-container');
     var $line = $('.line', $gameContainer);
+    $gameContainer.iTimerSpeed = 3000;
+    $gameContainer.bLevel2 = false;
+    $gameContainer.bLevel3 = false;
+    $gameContainer.bLevel4 = false;
     $gameContainer.aCars = []; //定义所有的其他汽车
     var oMe = new MyCar(); //定义一个我的车
     var oOthers; //定义对向的车
@@ -14,16 +18,55 @@ $(function () {
         }
     }, 50);
     newCar(); //先生成一个对向的车
-    // 通过定时器，每隔5秒生成一个对向的车
+    // 通过定时器，每隔$gameContainer.iTimerSpeed秒生成一个对向的车
     $gameContainer.get(0).newCarTimer = setInterval(function () {
         newCar();
-    }, 5000);
+    }, $gameContainer.iTimerSpeed);
     /**
      * 生成对象的车，并加入到用来装对向车的aCars数组中
      * 
      */
     function newCar() {
         oOthers = new Car();
+        if (parseInt($sum.html()) < 60) {
+            null;
+        } else if (parseInt($sum.html()) < 300) {
+            oOthers.iSpeed *= 1.5;
+            if (!$gameContainer.bLevel2) {
+                $($gameContainer.aCars).each(function () {
+                    this.iSpeed = oOthers.iSpeed;
+                });
+                clearInterval($gameContainer.get(0).newCarTimer);
+                $gameContainer.get(0).newCarTimer = setInterval(function () {
+                    newCar();
+                }, $gameContainer.iTimerSpeed / 3);
+                $gameContainer.bLevel2 = !$gameContainer.bLevel2;
+            }
+        } else if (parseInt($sum.html()) < 600) {
+            oOthers.iSpeed *= 2;
+            if (!$gameContainer.bLevel3) {
+                $($gameContainer.aCars).each(function () {
+                    this.iSpeed = oOthers.iSpeed;
+                });
+                clearInterval($gameContainer.get(0).newCarTimer);
+                $gameContainer.get(0).newCarTimer = setInterval(function () {
+                    newCar();
+                }, $gameContainer.iTimerSpeed / 5);
+                $gameContainer.bLevel3 = !$gameContainer.bLevel3;
+            }
+        } else {
+            oOthers.iSpeed *= 3;
+            if (!$gameContainer.bLevel4) {
+                $($gameContainer.aCars).each(function () {
+                    this.iSpeed = oOthers.iSpeed;
+                });
+                clearInterval($gameContainer.get(0).newCarTimer);
+                $gameContainer.get(0).newCarTimer = setInterval(function () {
+                    newCar();
+                }, $gameContainer.iTimerSpeed / 6);
+                $gameContainer.bLevel4 = !$gameContainer.bLevel4;
+            }
+        }
         oOthers.move(oMe);
         $gameContainer.aCars.push(oOthers);
     }
