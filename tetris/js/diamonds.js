@@ -5,8 +5,7 @@ var $gameContent = $('#game .game-content');
  * @returns 生成的方块对象
  */
 function newTetris() {
-    // var i = getRandom(0, 4);
-    var i = 0;
+    var i = getRandom(0, 4);
     var oTetris; //表示要生成的方块
     switch (i) {
         case 0:
@@ -295,10 +294,86 @@ function DiamondZ() {
 DiamondZ.prototype = new Common(); //继承方法
 DiamondZ.prototype.constructor = DiamondZ; //将构造函数改为自己
 DiamondZ.prototype.transfigurationDown =
-    DiamondZ.prototype.transfigurationUp =
-    DiamondZ.prototype.transfigurationLeft =
+    DiamondZ.prototype.transfigurationUp = function () {
+        this.transfigurationDirction = 'up';
+        var $pos = $(this.aDiv[1]).position();
+        $pos.iWidth = this.iWidth;
+        if (this.sDirction === 'left') {
+            $(this.aDiv[0]).css({
+                left: $pos.left - $pos.iWidth,
+                top: $pos.top - $pos.iWidth
+            });
+            $(this.aDiv[1]).css({
+                left: $pos.left - $pos.iWidth,
+                top: $pos.top
+            });
+            $(this.aDiv[2]).css({
+                left: $pos.left,
+                top: $pos.top
+            });
+            $(this.aDiv[3]).css({
+                left: $pos.left,
+                top: $pos.top + $pos.iWidth
+            });
+        } else {
+            $(this.aDiv[0]).css({
+                left: $pos.left,
+                top: $pos.top - $pos.iWidth
+            });
+            $(this.aDiv[1]).css({
+                left: $pos.left,
+                top: $pos.top
+            });
+            $(this.aDiv[2]).css({
+                left: $pos.left - $pos.iWidth,
+                top: $pos.top
+            });
+            $(this.aDiv[3]).css({
+                left: $pos.left - $pos.iWidth,
+                top: $pos.top + $pos.iWidth
+            });
+        }
+    };
+DiamondZ.prototype.transfigurationLeft =
     DiamondZ.prototype.transfigurationRight = function () {
-        console.log(this);
+        this.transfigurationDirction = 'right';
+        var $pos = $(this.aDiv[1]).position();
+        $pos.iWidth = this.iWidth;
+        if (this.sDirction === 'left') {
+            $(this.aDiv[0]).css({
+                left: $pos.left + $pos.iWidth * 2,
+                top: $pos.top
+            });
+            $(this.aDiv[1]).css({
+                left: $pos.left + $pos.iWidth,
+                top: $pos.top
+            });
+            $(this.aDiv[2]).css({
+                left: $pos.left + $pos.iWidth,
+                top: $pos.top + $pos.iWidth
+            });
+            $(this.aDiv[3]).css({
+                left: $pos.left,
+                top: $pos.top + $pos.iWidth
+            });
+        } else {
+            $(this.aDiv[0]).css({
+                left: $pos.left + $pos.iWidth,
+                top: $pos.top + $pos.iWidth
+            });
+            $(this.aDiv[1]).css({
+                left: $pos.left,
+                top: $pos.top + $pos.iWidth
+            });
+            $(this.aDiv[2]).css({
+                left: $pos.left,
+                top: $pos.top
+            });
+            $(this.aDiv[3]).css({
+                left: $pos.left - $pos.iWidth,
+                top: $pos.top
+            });
+        }
     };
 
 
@@ -420,12 +495,7 @@ Line.prototype.transfigurationLeft =
         this.transfigurationDirction = 'right';
         var $pos = $(this.aDiv[1]).position();
         $pos.iWidth = this.iWidth;
-        console.log($pos);
         for (var i = -1; i <= 2; i++) {
-            console.log({
-                left: $pos.left + $pos.iWidth * i,
-                top: $pos.top
-            });
             $(this.aDiv[i + 1]).css({
                 left: $pos.left + $pos.iWidth * i,
                 top: $pos.top
