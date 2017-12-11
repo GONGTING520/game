@@ -39,7 +39,7 @@ $(function () {
         now.bMovable = false;
         aTetris.push(now);
         //总分加5
-        $score.html(parseInt($score.html()) + 5);
+        // $score.html(parseInt($score.html()) + 5);
         //修改最小top
         for (var i = 0; i < now.aDiv.length; i++) {
             if ($gameContent.iMinTop > now.aDiv[i].offsetTop) {
@@ -166,6 +166,13 @@ $(function () {
      */
     function toggleNowAndNext() {
         now = oNext;
+        if (parseInt($score.html()) < 20) {
+            null;
+        } else if (parseInt($score.html()) < 50) {
+            now.speed /= 1.5;
+        } else {
+            now.speed /= 3;
+        }
         fallDown();
         oNext = newTetris();
         $next = $(oNext.aDiv).clone();
