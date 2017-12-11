@@ -35,7 +35,7 @@ function Common() {
     this.iWidth = $gameContent.width() / 10;
     this.aDiv = [];
     this.bMovable = true; //记录是否存活
-    this.speed = 1000;
+    this.speed = 500;
     this.transfigurationDirction = 'up';
     for (var i = 0; i < 4; i++) { //定义四个小方块
         this.aDiv.push($('<div data-index="' + i + '"></div>').get(0));
