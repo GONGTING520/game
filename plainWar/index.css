@@ -16,12 +16,54 @@
 
 #container {
     width: 700px;
-    height: 500px;
+    height: 600px;
     margin: 0 auto;
     border: 1px solid #000000;
 }
 
-#score{
+#container .left,
+#container .right {
+    float: left;
+    position: relative;
+    width: 33%;
+    height: 100%;
+}
+
+#container .center {
+    float: left;
+    position: relative;
+    width: 34%;
+    height: 100%;
+}
+
+#container .anemy,
+#container .mine {
+    position: absolute;
+    height: 66px;
+    left: 50%;
+}
+
+#container .anemy {
+    width: 36px;
+    margin-left: -18px;
+    background: url("img/plain.png") no-repeat center;
+}
+
+#container .mine {
+    width: 40px;
+    margin-left: -18px;
+    background: url("img/myPlain.png") no-repeat center;
+}
+
+#container .shot {
+    position: absolute;
+    width: 0;
+    height: 4px;
+    border: 2px solid #000000;
+    border-radius: 50%;
+}
+
+#score {
     position: absolute;
     right: 200px;
     top: 100px;
