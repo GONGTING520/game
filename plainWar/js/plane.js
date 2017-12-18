@@ -18,11 +18,11 @@ function Plane() {
 }
 Plane.prototype.shoot = function () {
     var that = this;
-    // this.shootTimer = setInterval(function () {
-        // if (that.aShot.length < 6) {
+    this.shootTimer = setInterval(function () {
+        if (that.aShot.length < 6) {
             that.aShot.push(new Shot(that));
-        // }
-    // }, 500);
+        }
+    }, 500);
 };
 
 //敌人的飞机
