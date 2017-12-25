@@ -37,12 +37,34 @@ Shot.prototype.move = function () {
             this.$shotBody.css({
                 top: '-=4'
             });
+            //若子弹飞出边框，则停止定时器
+            if (this.$shotBody.offset().top + this.$shotBody.height() < $container.offset().top) {
+                clearInterval(this.moveTimer);
+                //删除owner中aShot中相应的子弹
+                for (var i = 0; i < this.owner.aShot.length; i++) {
+                    if (this.owner.aShot[i] == this) {
+                        //如果这颗子弹是数组中的第i个，则从数组中删除这个
+                        this.owner.aShot.splice(i, 1);
+                    }
+                }
+            }
         }.bind(this), 50);
     } else {
         this.moveTimer = setInterval(function () {
             this.$shotBody.css({
                 top: '+=4'
             });
+            //若子弹飞出边框，则停止定时器
+            if (this.$shotBody.position().top > $container.offset().top + $container.height()) {
+                clearInterval(this.moveTimer);
+                //删除owner中aShot中相应的子弹
+                for (var i = 0; i < this.owner.aShot.length; i++) {
+                    if (this.owner.aShot[i] == this) {
+                        //如果这颗子弹是数组中的第i个，则从数组中删除这个
+                        this.owner.aShot.splice(i, 1);
+                    }
+                }
+            }
         }.bind(this), 50);
     }
 };
