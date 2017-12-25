@@ -42,6 +42,7 @@
     position: absolute;
     height: 66px;
     left: 50%;
+    transition: all 0.3s linear;
 }
 
 #container .anemy {
