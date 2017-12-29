@@ -1,0 +1,96 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background: #faf8ef;
+}
+
+#container{
+    border: 5px solid #bbada0;
+    margin: 100px auto;
+    background: #cdc1b4;
+    border-radius: 10px;
+    position: relative;
+}
+
+#container td {
+    display: block;
+    float: left;
+    width: 150px;
+    height: 150px;
+    border: 5px solid #bbada0;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 150px;
+}
+
+#container div{
+    width: 150px;
+    height: 150px;
+    position: absolute;
+}
+
+.one{
+    background: #eee4da;
+    color: #7c736a;
+}
+
+.two{
+    background: #ece0c8;
+    color: #7c736a;
+}
+
+.three{
+    background: #f2b179;
+    color: #fff7eb;
+}
+
+.four{
+    background: #f59563;
+    color: #fff7eb;
+}
+
+.five{
+    background: #f57c5f;
+    color: #fff7eb;
+}
+
+.six{
+    background: #f65e3b;
+    color: #fff7eb;
+}
+
+.seven{
+    background: #edcf72;
+    color: #fff7eb;
+}
+
+.eight{
+    background: #edcc61;
+    box-shadow: 0 0 30px 10px rgba(237, 230, 80, 0.31746);
+    color: #fff7eb;
+}
+
+.ten{
+    background: #edc850;
+    color: #f9f6f2;
+    box-shadow: 0 0 30px 10px rgba(237, 230, 80, 0.49683);
+    font-size: 45px;
+}
+
+.eleven{
+    color: #f9f6f2;
+    background: #edc53f;
+    box-shadow: 0 0 30px 10px rgba(207, 230, 63, 0.47619);
+    font-size: 35px;
+}
+
+.twelve{
+    color: #f9f6f2;
+    background: #edc22e;
+    box-shadow: 0 0 40px 10px rgba(207, 204, 46, 0.75556);
+    font-size: 35px;
+}
