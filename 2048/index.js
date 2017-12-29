@@ -4,22 +4,36 @@
 $(function () {
     var $container = $('#container');
     var iNewNumber = 1; //每次生成的方块的数量
-    var $aTd = [];
+    var aTd = [];
     var $aTr = $('tr', $container);
     $aTr.each(function (index, elem) {
-        $aTd.push($(elem).children('td')); //每个元素是一个jq对象，里面是每行的td
+        aTd.push($(elem).children('td')); //每个元素是一个jq对象，里面是每行的td
     });
     var $aDiv;
 
-    new2048();
+    new2048(2);
     $(document).on('keyup', function (e) {
         $aDiv = $('div', $container).removeClass('show');
         switch (e.keyCode) {
             case 37: //left
-                $aDiv.animate({
-                    left: 5
-                }, 100);
-                changeDiv($aDiv.eq(0), null, 0);
+                for (var i = 0; i < aTd.length; i++) {
+                    var aMerge = []; //需要合并元素的数组
+                    aTd[i].each(function () {
+                        if (this.innerHTML != '') {
+                            aMerge.push($(this).children('div'));
+                        }
+                    });
+
+                    if (aMerge.length > 1) {
+                        mergeDivLeft(aMerge, 0, 1, 0);
+                    } else if (aMerge.length = 1) {
+                        $(aMerge[0]).animate({
+                            left: 5
+                        }, 100, function () {
+                            changeDiv($(this), null, 0);
+                        });
+                    }
+                }
                 break;
             case 38: //up
                 break;
@@ -60,8 +74,12 @@ $(function () {
                 break;
             case 2:
                 do {
-                    aNewPos[0] = getRandom(0, $aEmptyTd.length - 1); //生成方块1的位置
-                    aNewPos[1] = getRandom(0, $aEmptyTd.length - 1); //生成方块2的位置
+                    // aNewPos[0] = getRandom(0, $aEmptyTd.length - 1); //生成方块1的位置
+                    // aNewPos[1] = getRandom(0, $aEmptyTd.length - 1); //生成方块2的位置
+                    aNewPos[0] = 5;
+                    aNewPos[1] = 6;
+                    // aNewPos[2] = 7;
+                    // aNewPos[3] = 4;
                 } while (aNewPos[1] === aNewPos[0]); //当两次随机数相同的时候重复执行
                 break;
         }
@@ -70,9 +88,9 @@ $(function () {
             var $div;
             // 若随机数是1则生成一个2,否则生成一个4
             if (getRandom(1, 2) === 1) {
-                $div = $('<div class="one show">2</div>');
+                $div = $('<div class="diamand-2 show">2</div>');
             } else {
-                $div = $('<div class="two show">4</div>');
+                $div = $('<div class="diamand-4 show">4</div>');
             }
             $div.css({
                 left: $aEmptyTd.eq(aNewPos[i]).position().left + 5,
@@ -91,6 +109,52 @@ $(function () {
         if (iTd == null) {
             iTd = iNowTd;
         }
-        $aTd[iTr].eq(iTd).html(elem);
+        aTd[iTr].eq(iTd).html(elem);
+    }
+
+    function mergeDivLeft(arr, num1, num2, iTd) {
+        if (arr[num1].text() == arr[num2].text()) {
+            arr[num1].animate({
+                left: 160 * iTd + 5
+            }, 100, function () {
+                changeDiv($(this), null, iTd);
+                this.innerHTML *= 2;
+                this.className = 'diamand-' + this.innerHTML;
+            });
+            arr[num2].animate({
+                left: 160 * iTd + 5
+            }, 100, function () {
+                $(this).closest('td').text('');
+            });
+            //第一次进入：num1,num2已经合并，此时判断长度是否为3
+            if (arr.length == num2 + 2) {
+                arr[num2 + 1].animate({
+                    left: 160 * (iTd + 1) + 5
+                }, 100, function () {
+                    changeDiv($(this), null, iTd + 1);
+                });
+            } else if (arr.length > num2 + 2) {
+                //第一次进入：说明长度为4
+                arguments.callee(arr, num1 + 2, num2 + 2, iTd + 1);
+            }
+        } else {
+            arr[num1].animate({
+                left: 160 * iTd + 5
+            }, 100, function () {
+                changeDiv($(this), null, iTd);
+            });
+            //第一次进入：num2=1，此时判断长度是否为3
+            if (arr.length >= num2 + 2) {
+                arguments.callee(arr, num1 + 1, num2 + 1, iTd + 1);
+            } else {
+                //第一次进入：说明只有两个
+                arr[num2].animate({
+                    left: 160 * (iTd + 1) + 5
+                }, 100, function () {
+                    changeDiv($(this), null, iTd + 1);
+                });
+            }
+
+        }
     }
 });
