@@ -1,15 +1,79 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
 
-body{
+body {
     background: #faf8ef;
 }
 
-#container{
+.clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+#info {
+    width: 600px;
+    margin: 0 auto;
+}
+
+#info .title {
+    color: #776e65;
+    font-size: 60px;
+    float: left;
+}
+
+#info .score,
+#info .best {
+    background: #bbada0;
+    color: #eee4da;
+    padding: 5px 10px;
+    float: right;
+    text-align: center;
+    border-radius: 10px;
+    height: 60px;
+    line-height: 30px;
+    margin-top: 10px;
+}
+
+#info .score span,
+#info .best span {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;    
+}
+
+#info .score {
+    margin-right: 10px;
+}
+
+#info .new{
+    padding: 10px 0;
+}
+
+#info .author {
+    float: left;
+}
+
+#info .new-game {
+    float: right;
+    font-size: 20px;
+    background: #8f7a66;
+    color: #fff7eb;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+#info .dec{
+    float: left;
+}
+#container {
     border: 5px solid #bbada0;
-    margin: 100px auto;
+    margin: 10px auto;
     background: #cdc1b4;
     border-radius: 10px;
     position: relative;
@@ -27,70 +91,84 @@ body{
     line-height: 150px;
 }
 
-#container div{
+#container div {
     width: 150px;
     height: 150px;
-    position: absolute;
+    position: absolute;   
+    /* transition: all 0.1s linear; */
 }
 
-.one{
+.show{
+    animation: show 0.1s linear forwards;
+}
+
+.one {
     background: #eee4da;
     color: #7c736a;
 }
 
-.two{
+.two {
     background: #ece0c8;
     color: #7c736a;
 }
 
-.three{
+.three {
     background: #f2b179;
     color: #fff7eb;
 }
 
-.four{
+.four {
     background: #f59563;
     color: #fff7eb;
 }
 
-.five{
+.five {
     background: #f57c5f;
     color: #fff7eb;
 }
 
-.six{
+.six {
     background: #f65e3b;
     color: #fff7eb;
 }
 
-.seven{
+.seven {
     background: #edcf72;
     color: #fff7eb;
 }
 
-.eight{
+.eight {
     background: #edcc61;
     box-shadow: 0 0 30px 10px rgba(237, 230, 80, 0.31746);
     color: #fff7eb;
 }
 
-.ten{
+.ten {
     background: #edc850;
     color: #f9f6f2;
     box-shadow: 0 0 30px 10px rgba(237, 230, 80, 0.49683);
     font-size: 45px;
 }
 
-.eleven{
+.eleven {
     color: #f9f6f2;
     background: #edc53f;
     box-shadow: 0 0 30px 10px rgba(207, 230, 63, 0.47619);
     font-size: 35px;
 }
 
-.twelve{
+.twelve {
     color: #f9f6f2;
     background: #edc22e;
     box-shadow: 0 0 40px 10px rgba(207, 204, 46, 0.75556);
     font-size: 35px;
+}
+
+@keyframes show {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
 }
