@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>2048</title>
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
+    <div id="info" class="clearfix">
+        <h1 class="title">2048</h1>
+        <div class="clearfix">
+            <div class="best">best
+                <br>
+                <span>0</span>
+            </div>
+            <div class="score">score
+                <br>
+                <span>0</span>
+            </div>
+        </div>
+        <div class="clearfix new">
+            <div class="author">Made&nbsp;By&nbsp;龚婷
+                <br>Join&nbsp;the&nbsp;numbers&nbsp;and&nbsp;get&nbsp;to&nbsp;the&nbsp;2048&nbsp;tile!</div>
+            <div class="new-game">new&nbsp;game</div>
+
+        </div>
+    </div>
     <table id="container" cellspacing="0">
         <tr>
             <td></td>
@@ -32,5 +53,9 @@
             <td></td>
         </tr>
     </table>
+
+    <script src="../jquery-3.2.1.js"></script>
+    <script src="index.js"></script>
 </body>
+
 </html>
