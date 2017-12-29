@@ -20,9 +20,9 @@ $(function () {
     /**
      * 获取min-max之间的随机整数
      * 
-     * @param {number} min 
-     * @param {number} max 
-     * @returns 随机整数
+     * @param {number} min 最小边界
+     * @param {number} max 最大边界
+     * @returns number
      */
     function getRandom(min, max) {
         return Math.round(Math.random() * (max - min) + min);
@@ -31,12 +31,15 @@ $(function () {
     /**
      * 生成2048方块
      * 
+     * @param {number} num 生成的数量1/2,可以不传，不传则会随机生成1/2个
      */
-    function new2048() {
+    function new2048(num) {
         // 获取当前td为空的
         var $aEmptyTd = $('td:empty', $container);
         var aNewPos = []; //生成方块的位置数组
-        var iNewNum = getRandom(1, 2); //生成方块的数量
+        var iNewNum = 0; //生成方块的数量
+        typeof num == 'number' ? iNewNum = num : iNewNum = getRandom(1, 2);
+
         // 判断生成1个还是2个方块
         switch (iNewNum) {
             case 1:
