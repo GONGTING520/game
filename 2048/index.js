@@ -6,6 +6,7 @@ $(function () {
     var $info = $('#info');
     var $score = $('.score span', $info); //当前得分
     var $best = $('.best span', $info); //最好得分
+    var $newGame = $('.new-game', $info); //开始新游戏
     var iNewNumber = 1; //每次生成的方块的数量
     var $aTr = $('tr', $container);
     var aTd = []; //记录td的数组
@@ -14,7 +15,7 @@ $(function () {
     });
     var $aDiv;
 
-    new2048(2);
+    new2048();
     $(document).on('keyup', function (e) {
         $aDiv = $('div', $container).removeClass('show');
         var aMerge = []; //需要合并元素的数组
@@ -104,6 +105,20 @@ $(function () {
                 }
                 break;
         }
+    });
+
+    //点击开始新游戏
+    $newGame.on('click', function () {
+        //清空所有的td
+        for (var i = 0; i < aTd.length; i++) {
+            aTd[i].each(function () {
+                $(this).empty();
+            });
+        }
+        //清空当前成绩
+        $score.text(0);
+        //重新生成2048方块
+        new2048();
     });
 
     /**
