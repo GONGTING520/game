@@ -17,93 +17,106 @@ $(function () {
 
     new2048();
     $(document).on('keyup', function (e) {
-        $aDiv = $('div', $container).removeClass('show');
-        var aMerge = []; //需要合并元素的数组
-        switch (e.keyCode) {
-            case 37: //left
-                for (var i = 0; i < aTd.length; i++) {
-                    aMerge = [];
-                    aTd[i].each(function () {
-                        if (this.innerHTML != '') {
-                            aMerge.push($(this).children('div'));
-                        }
-                    });
-
-                    if (aMerge.length > 1) {
-                        mergeDivTransverse(aMerge, 0, 1, 0, 2, 'left');
-                    } else if (aMerge.length = 1) {
-                        $(aMerge[0]).animate({
-                            left: 5
-                        }, 100, function () {
-                            changeDiv($(this), null, 0);
+        e = e || window.event;
+        //如果按的是上下左右
+        if (e.keyCode <= 40 && e.keyCode >= 37) {
+            //清除所有div的show类名
+            $aDiv = $('div', $container).removeClass('show');
+            var aMerge = []; //需要合并元素的数组
+            $aDiv.bNew2048 = true; //是否需要生成新的2048方块
+            switch (e.keyCode) {
+                case 37: //left
+                    for (var i = 0; i < aTd.length; i++) {
+                        aMerge = [];
+                        aTd[i].each(function () {
+                            if (this.innerHTML != '') {
+                                aMerge.push($(this).children('div'));
+                            }
                         });
-                    }
-                }
-                break;
-            case 38: //up
-                var $td; // 记录当前查看的td
-                for (var i = 0; i < aTd[0].length; i++) {
-                    aMerge = [];
-                    for (var j = 0; j < aTd.length; j++) {
-                        $td = aTd[j].eq(i);
-                        if ($td.text() != '') {
-                            aMerge.push($td.children('div'));
+
+                        if (aMerge.length > 1) {
+                            mergeDivTransverse(aMerge, 0, 1, 0, 2, 'left');
+                        } else if (aMerge.length = 1) {
+                            $(aMerge[0]).animate({
+                                left: 5
+                            }, 100, function () {
+                                changeDiv($(this), null, 0);
+                            });
                         }
                     }
-
-                    if (aMerge.length > 1) {
-                        mergeDivLongitudinal(aMerge, 0, 1, 0, 2, 'left');
-                    } else if (aMerge.length = 1) {
-                        $(aMerge[0]).animate({
-                            top: 5
-                        }, 100, function () {
-                            changeDiv($(this), 0, null);
-                        });
-                    }
-                }
-                break;
-            case 39: //right
-                for (var i = 0; i < aTd.length; i++) {
-                    aMerge = []; //需要合并元素的数组
-                    aTd[i].each(function () {
-                        if (this.innerHTML != '') {
-                            aMerge.push($(this).children('div'));
+                    break;
+                case 38: //up
+                    var $td; // 记录当前查看的td
+                    for (var i = 0; i < aTd[0].length; i++) {
+                        aMerge = [];
+                        for (var j = 0; j < aTd.length; j++) {
+                            $td = aTd[j].eq(i);
+                            if ($td.text() != '') {
+                                aMerge.push($td.children('div'));
+                            }
                         }
-                    });
 
-                    if (aMerge.length > 1) {
-                        mergeDivTransverse(aMerge, aMerge.length - 2, aMerge.length - 1, aTd[0].length - 1, 2, 'right');
-                    } else if (aMerge.length = 1) {
-                        $(aMerge[0]).animate({
-                            left: 160 * (aTd[0].length - 1) + 5
-                        }, 100, function () {
-                            changeDiv($(this), null, aTd[0].length - 1);
-                        });
-                    }
-                }
-                break;
-            case 40: //down
-                var $td; // 记录当前查看的td
-                for (var i = 0; i < aTd[0].length; i++) {
-                    aMerge = [];
-                    for (var j = 0; j < aTd.length; j++) {
-                        $td = aTd[j].eq(i);
-                        if ($td.text() != '') {
-                            aMerge.push($td.children('div'));
+                        if (aMerge.length > 1) {
+                            mergeDivLongitudinal(aMerge, 0, 1, 0, 2, 'left');
+                        } else if (aMerge.length = 1) {
+                            $(aMerge[0]).animate({
+                                top: 5
+                            }, 100, function () {
+                                changeDiv($(this), 0, null);
+                            });
                         }
                     }
-
-                    if (aMerge.length > 1) {
-                        mergeDivLongitudinal(aMerge, aMerge.length - 2, aMerge.length - 1, aTd.length - 1, 2, 'right');
-                    } else if (aMerge.length = 1) {
-                        $(aMerge[0]).animate({
-                            top: 160 * (aTd.length - 1) + 5
-                        }, 100, function () {
-                            changeDiv($(this), aTd.length - 1, null);
+                    break;
+                case 39: //right
+                    for (var i = 0; i < aTd.length; i++) {
+                        aMerge = []; //需要合并元素的数组
+                        aTd[i].each(function () {
+                            if (this.innerHTML != '') {
+                                aMerge.push($(this).children('div'));
+                            }
                         });
+
+                        if (aMerge.length > 1) {
+                            mergeDivTransverse(aMerge, aMerge.length - 2, aMerge.length - 1, aTd[0].length - 1, 2, 'right');
+                        } else if (aMerge.length = 1) {
+                            $(aMerge[0]).animate({
+                                left: 160 * (aTd[0].length - 1) + 5
+                            }, 100, function () {
+                                changeDiv($(this), null, aTd[0].length - 1);
+                            });
+                        }
                     }
+                    break;
+                case 40: //down
+                    var $td; // 记录当前查看的td
+                    for (var i = 0; i < aTd[0].length; i++) {
+                        aMerge = [];
+                        for (var j = 0; j < aTd.length; j++) {
+                            $td = aTd[j].eq(i);
+                            if ($td.text() != '') {
+                                aMerge.push($td.children('div'));
+                            }
+                        }
+
+                        if (aMerge.length > 1) {
+                            mergeDivLongitudinal(aMerge, aMerge.length - 2, aMerge.length - 1, aTd.length - 1, 2, 'right');
+                        } else if (aMerge.length = 1) {
+                            $(aMerge[0]).animate({
+                                top: 160 * (aTd.length - 1) + 5
+                            }, 100, function () {
+                                changeDiv($(this), aTd.length - 1, null);
+                            });
+                        }
+                    }
+                    break;
+            }
+            $container.newDivTimer = setInterval(function () {
+                //当没有div做动画的时候在生成新的2048方块
+                if ($aDiv.filter(':animated').length == 0) {
+                    new2048(iNewNumber);
+                    clearInterval($container.newDivTimer);
                 }
-                break;
+            }, 100);
         }
     });
 
@@ -198,9 +211,9 @@ $(function () {
      * @param {string} score 要修改为的成绩
      */
     function changeScore(score) {
-        $score.text(score); //设置当前得分为score
-        if ($score.text() > $best.text()) { //若当前得分>最好成绩
-            $best.text(score); //设置最好成绩为score
+        $score.text($score.text() * 1 + score * 1); //设置当前得分为score
+        if ($score.text() * 1 > $best.text() * 1) { //若当前得分>最好成绩
+            $best.text($score.text()); //设置最好成绩为score
         }
     }
 
