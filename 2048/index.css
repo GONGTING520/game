@@ -94,70 +94,69 @@ body {
 #container div {
     width: 150px;
     height: 150px;
-    position: absolute;   
-    /* transition: all 0.1s linear; */
+    position: absolute;
 }
 
 .show{
     animation: show 0.1s linear forwards;
 }
 
-.one {
+.diamand-2 {
     background: #eee4da;
     color: #7c736a;
 }
 
-.two {
+.diamand-4 {
     background: #ece0c8;
     color: #7c736a;
 }
 
-.three {
+.diamand-8 {
     background: #f2b179;
     color: #fff7eb;
 }
 
-.four {
+.diamand-16 {
     background: #f59563;
     color: #fff7eb;
 }
 
-.five {
+.diamand-32 {
     background: #f57c5f;
     color: #fff7eb;
 }
 
-.six {
+.diamand-64 {
     background: #f65e3b;
     color: #fff7eb;
 }
 
-.seven {
+.diamand-128 {
     background: #edcf72;
     color: #fff7eb;
 }
 
-.eight {
+.diamand-256 {
     background: #edcc61;
     box-shadow: 0 0 30px 10px rgba(237, 230, 80, 0.31746);
     color: #fff7eb;
 }
 
-.ten {
+.diamand-512 {
     background: #edc850;
     color: #f9f6f2;
     box-shadow: 0 0 30px 10px rgba(237, 230, 80, 0.49683);
     font-size: 45px;
 }
 
-.eleven {
+.diamand-1024 {
     color: #f9f6f2;
     background: #edc53f;
     box-shadow: 0 0 30px 10px rgba(207, 230, 63, 0.47619);
     font-size: 35px;
 }
 
-.twelve {
+.diamand-2048 {
     color: #f9f6f2;
     background: #edc22e;
     box-shadow: 0 0 40px 10px rgba(207, 204, 46, 0.75556);
