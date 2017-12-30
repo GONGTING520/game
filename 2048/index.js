@@ -3,9 +3,12 @@
  */
 $(function () {
     var $container = $('#container');
+    var $info = $('#info');
+    var $score = $('.score span', $info); //当前得分
+    var $best = $('.best span', $info); //最好得分
     var iNewNumber = 1; //每次生成的方块的数量
-    var aTd = [];
     var $aTr = $('tr', $container);
+    var aTd = []; //记录td的数组
     $aTr.each(function (index, elem) {
         aTd.push($(elem).children('td')); //每个元素是一个jq对象，里面是每行的td
     });
@@ -175,6 +178,18 @@ $(function () {
     }
 
     /**
+     * 修改成绩和最好成绩
+     * 
+     * @param {string} score 要修改为的成绩
+     */
+    function changeScore(score) {
+        $score.text(score); //设置当前得分为score
+        if ($score.text() > $best.text()) { //若当前得分>最好成绩
+            $best.text(score); //设置最好成绩为score
+        }
+    }
+
+    /**
      * 合并横向的div元素，所以行数不用变，只需传入列数
      * 
      * @param {array} arr 要合并的元素数组
@@ -192,6 +207,7 @@ $(function () {
                 changeDiv($(this), null, iTd);
                 this.innerHTML *= 2;
                 this.className = 'diamand-' + this.innerHTML;
+                changeScore(this.innerHTML); //修改成绩
             });
             arr[num2].animate({
                 left: 160 * iTd + 5
@@ -271,6 +287,7 @@ $(function () {
                 changeDiv($(this), iTd, null);
                 this.innerHTML *= 2;
                 this.className = 'diamand-' + this.innerHTML;
+                changeScore(this.innerHTML); //修改成绩                
             });
             arr[num2].animate({
                 top: 160 * iTd + 5
