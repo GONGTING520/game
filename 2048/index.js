@@ -26,7 +26,7 @@ $(function () {
                     });
 
                     if (aMerge.length > 1) {
-                        mergeDiv(aMerge, 0, 1, 0, 2, 'left');
+                        mergeDivTransverse(aMerge, 0, 1, 0, 2, 'left');
                     } else if (aMerge.length = 1) {
                         $(aMerge[0]).animate({
                             left: 5
@@ -37,6 +37,26 @@ $(function () {
                 }
                 break;
             case 38: //up
+                var $td; // 记录当前查看的td
+                for (var i = 0; i < aTd[0].length; i++) {
+                    aMerge = [];
+                    for (var j = 0; j < aTd.length; j++) {
+                        $td = aTd[j].eq(i);
+                        if ($td.text() != '') {
+                            aMerge.push($td.children('div'));
+                        }
+                    }
+
+                    if (aMerge.length > 1) {
+                        mergeDivLongitudinal(aMerge, 0, 1, 0, 2, 'left');
+                    } else if (aMerge.length = 1) {
+                        $(aMerge[0]).animate({
+                            top: 5
+                        }, 100, function () {
+                            changeDiv($(this), 0, null);
+                        });
+                    }
+                }
                 break;
             case 39: //right
                 for (var i = 0; i < aTd.length; i++) {
@@ -48,7 +68,7 @@ $(function () {
                     });
 
                     if (aMerge.length > 1) {
-                        mergeDiv(aMerge, aMerge.length - 2, aMerge.length - 1, aTd[0].length - 1, 2, 'right');
+                        mergeDivTransverse(aMerge, aMerge.length - 2, aMerge.length - 1, aTd[0].length - 1, 2, 'right');
                     } else if (aMerge.length = 1) {
                         $(aMerge[0]).animate({
                             left: 160 * (aTd[0].length - 1) + 5
@@ -59,6 +79,26 @@ $(function () {
                 }
                 break;
             case 40: //down
+                var $td; // 记录当前查看的td
+                for (var i = 0; i < aTd[0].length; i++) {
+                    aMerge = [];
+                    for (var j = 0; j < aTd.length; j++) {
+                        $td = aTd[j].eq(i);
+                        if ($td.text() != '') {
+                            aMerge.push($td.children('div'));
+                        }
+                    }
+
+                    if (aMerge.length > 1) {
+                        mergeDivLongitudinal(aMerge, aMerge.length - 2, aMerge.length - 1, aTd.length - 1, 2, 'right');
+                    } else if (aMerge.length = 1) {
+                        $(aMerge[0]).animate({
+                            top: 160 * (aTd.length - 1) + 5
+                        }, 100, function () {
+                            changeDiv($(this), aTd.length - 1, null);
+                        });
+                    }
+                }
                 break;
         }
     });
@@ -93,16 +133,8 @@ $(function () {
                 break;
             case 2:
                 do {
-                    // aNewPos[0] = getRandom(0, $aEmptyTd.length - 1); //生成方块1的位置
-                    // aNewPos[1] = getRandom(0, $aEmptyTd.length - 1); //生成方块2的位置
-                    // aNewPos[0] = 5;
-                    // aNewPos[1] = 6;
-                    // aNewPos[2] = 7;
-                    // aNewPos[3] = 4;
-                    aNewPos[0] = 0;
-                    aNewPos[1] = 4;
-                    aNewPos[2] = 8;
-                    aNewPos[3] = 12;
+                    aNewPos[0] = getRandom(0, $aEmptyTd.length - 1); //生成方块1的位置
+                    aNewPos[1] = getRandom(0, $aEmptyTd.length - 1); //生成方块2的位置
                 } while (aNewPos[1] === aNewPos[0]); //当两次随机数相同的时候重复执行
                 break;
         }
@@ -123,6 +155,13 @@ $(function () {
         }
     }
 
+    /**
+     * 用来切换elem的位置，切换到iTr行iTd列的td中
+     * 
+     * @param {object} elem 要切换的div元素
+     * @param {number} iTr 要切换的行数，传null默认elem当前所在行
+     * @param {number} iTd 要切换的列数，传null默认elem当前所在列
+     */
     function changeDiv(elem, iTr, iTd) {
         var iNowTr = elem.closest('tr').index();
         var iNowTd = elem.closest('td').index();
@@ -135,7 +174,17 @@ $(function () {
         aTd[iTr].eq(iTd).html(elem);
     }
 
-    function mergeDiv(arr, num1, num2, iTd, iNowLength, sDirection) {
+    /**
+     * 合并横向的div元素，所以行数不用变，只需传入列数
+     * 
+     * @param {array} arr 要合并的元素数组
+     * @param {number} num1 要合并的下标1
+     * @param {number} num2 要合并的下标2
+     * @param {number} iTd 合并到的列数
+     * @param {number} iNowLength 现在已知的arr的长度
+     * @param {string} sDirection 合并方向：left（向左合并）/right（向右合并）
+     */
+    function mergeDivTransverse(arr, num1, num2, iTd, iNowLength, sDirection) {
         if (arr[num1].text() == arr[num2].text()) {
             arr[num1].animate({
                 left: 160 * iTd + 5
@@ -204,4 +253,82 @@ $(function () {
         }
     }
 
+    /**
+     * 合并纵向的div元素，所以列数不用变，只需传入行数
+     * 
+     * @param {array} arr 要合并的元素数组
+     * @param {number} num1 要合并的下标1
+     * @param {number} num2 要合并的下标2
+     * @param {number} iTd 合并到的行数
+     * @param {number} iNowLength 现在已知的arr的长度
+     * @param {string} sDirection 合并方向：left（向上合并）/right（向下合并）
+     */
+    function mergeDivLongitudinal(arr, num1, num2, iTd, iNowLength, sDirection) {
+        if (arr[num1].text() == arr[num2].text()) {
+            arr[num1].animate({
+                top: 160 * iTd + 5
+            }, 100, function () {
+                changeDiv($(this), iTd, null);
+                this.innerHTML *= 2;
+                this.className = 'diamand-' + this.innerHTML;
+            });
+            arr[num2].animate({
+                top: 160 * iTd + 5
+            }, 100, function () {
+                $(this).closest('td').text('');
+            });
+            //第一次进入：num1,num2已经合并，此时判断长度是否为3
+            if (arr.length == iNowLength + 1) {
+                if (sDirection == 'left') {
+                    arr[num2 + 1].animate({
+                        top: 160 * (iTd + 1) + 5
+                    }, 100, function () {
+                        changeDiv($(this), iTd + 1, null);
+                    });
+                } else {
+                    arr[num1 - 1].animate({
+                        top: 160 * (iTd - 1) + 5
+                    }, 100, function () {
+                        changeDiv($(this), iTd - 1, null);
+                    });
+                }
+            } else if (arr.length > iNowLength + 1) {
+                //第一次进入：说明长度为4
+                if (sDirection == 'left') {
+                    arguments.callee(arr, num1 + 2, num2 + 2, iTd + 1, iNowLength + 2, 'left');
+                } else {
+                    arguments.callee(arr, num1 - 2, num2 - 2, iTd - 1, iNowLength + 2, 'right');
+                }
+            }
+        } else {
+            arr[sDirection == 'left' ? num1 : num2].animate({
+                top: 160 * iTd + 5
+            }, 100, function () {
+                changeDiv($(this), iTd, null);
+            });
+            //第一次进入：num2=1，此时判断长度是否为3
+            if (arr.length >= iNowLength + 1) {
+                if (sDirection == 'left') {
+                    arguments.callee(arr, num1 + 1, num2 + 1, iTd + 1, iNowLength + 1, 'left');
+                } else {
+                    arguments.callee(arr, num1 - 1, num2 - 1, iTd - 1, iNowLength + 1, 'right');
+                }
+            } else {
+                //第一次进入：说明只有两个
+                if (sDirection == 'left') {
+                    arr[num2].animate({
+                        top: 160 * (iTd + 1) + 5
+                    }, 100, function () {
+                        changeDiv($(this), iTd + 1, null);
+                    });
+                } else {
+                    arr[num1].animate({
+                        top: 160 * (iTd - 1) + 5
+                    }, 100, function () {
+                        changeDiv($(this), iTd - 1, null);
+                    });
+                }
+            }
+        }
+    }
 });
