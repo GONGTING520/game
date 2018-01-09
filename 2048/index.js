@@ -113,7 +113,15 @@ $(function () {
             $container.newDivTimer = setInterval(function () {
                 //当没有div做动画的时候在生成新的2048方块
                 if ($aDiv.filter(':animated').length == 0) {
-                    new2048(iNewNumber);
+                    if ($score.html() == '2048') { //若分数达到2048
+                        new Layout({
+                            content: 'You Win!',
+                            score: $score.html(),
+                            type: 'win'
+                        });
+                    } else {
+                        new2048(iNewNumber);
+                    }
                     clearInterval($container.newDivTimer);
                 }
             }, 100);
