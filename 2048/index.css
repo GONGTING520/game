@@ -41,14 +41,14 @@ body {
 #info .best span {
     color: #ffffff;
     font-size: 24px;
-    font-weight: bold;    
+    font-weight: bold;
 }
 
 #info .score {
     margin-right: 10px;
 }
 
-#info .new{
+#info .new {
     padding: 10px 0;
 }
 
@@ -68,18 +68,24 @@ body {
     line-height: 50px;
     text-align: center;
 }
-#info .dec{
+
+#info .dec {
     float: left;
 }
+
 #container {
-    border: 5px solid #bbada0;
     margin: 10px auto;
-    background: #cdc1b4;
-    border-radius: 10px;
     position: relative;
+    width: 650px;
 }
 
-#container td {
+#container table {
+    border: 5px solid #bbada0;
+    background: #cdc1b4;
+    border-radius: 10px;
+}
+
+#container table td {
     display: block;
     float: left;
     width: 150px;
@@ -91,13 +97,13 @@ body {
     line-height: 150px;
 }
 
-#container div {
+#container table div {
     width: 150px;
     height: 150px;
     position: absolute;
 }
 
-.show{
+.show {
     animation: show 0.1s linear forwards;
 }
 
@@ -170,4 +176,55 @@ body {
     to {
         transform: scale(1);
     }
+}
+
+#win,
+#lose {
+    background: rgba(218, 213, 83, 0.556);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#win .title,
+#lose .title {
+    height: 50%;
+    text-align: center;
+    transform: translate(0, 50%);
+    font-size: 60px;
+}
+
+#win .score,
+#lose .score {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 80px;
+}
+
+#win .select {
+    width: 320px;
+    margin: 0 auto;
+}
+
+#lose .select {
+    width: 150px;
+    margin: 0 auto;
+}
+
+#win .continu,
+#win .new,
+#lose .new {
+    float: left;
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background: rgba(200, 200, 200, 0.7);
+    cursor: pointer;
+}
+
+#win .new {
+    float: right;
 }
