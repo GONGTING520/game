@@ -170,6 +170,20 @@ body {
     font-size: 35px;
 }
 
+.diamand-4096 {
+    color: #f9f6f2;
+    background: #ffcf33;
+    box-shadow: 0 0 40px 10px rgba(223, 216, 28, 0.856);
+    font-size: 35px;
+}
+
+.diamand-8192 {
+    color: #f9f6f2;
+    background: #fdc61f;
+    box-shadow: 0 0 40px 10px rgba(255, 251, 39, 0.756);
+    font-size: 35px;
+}
+
 @keyframes show {
     from {
         transform: scale(0);
