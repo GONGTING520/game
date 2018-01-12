@@ -20,92 +20,104 @@ $(function () {
         e = e || window.event;
         //如果按的是上下左右
         if (e.keyCode <= 40 && e.keyCode >= 37) {
+            $container.bFlag = true; //是否需要生成新的2048方块
             //清除所有div的show类名
             $aDiv = $('div', $container).removeClass('show');
             var aMerge = []; //需要合并元素的数组
-            $aDiv.bNew2048 = true; //是否需要生成新的2048方块
             switch (e.keyCode) {
                 case 37: //left
-                    for (var i = 0; i < aTd.length; i++) {
-                        aMerge = [];
-                        aTd[i].each(function () {
-                            if (this.innerHTML != '') {
-                                aMerge.push($(this).children('div'));
-                            }
-                        });
-
-                        if (aMerge.length > 1) {
-                            mergeDivTransverse(aMerge, 0, 1, 0, 2, 'left');
-                        } else if (aMerge.length = 1) {
-                            $(aMerge[0]).animate({
-                                left: 5
-                            }, 100, function () {
-                                changeDiv($(this), null, 0);
+                    bFlag = judgeHorizonMove('left');
+                    if (bFlag) {
+                        for (var i = 0; i < aTd.length; i++) {
+                            aMerge = [];
+                            aTd[i].each(function () {
+                                if (this.innerHTML != '') {
+                                    aMerge.push($(this).children('div'));
+                                }
                             });
+
+                            if (aMerge.length > 1) {
+                                mergeDivTransverse(aMerge, 0, 1, 0, 2, 'left');
+                            } else if (aMerge.length = 1) {
+                                $(aMerge[0]).animate({
+                                    left: 5
+                                }, 100, function () {
+                                    changeDiv($(this), null, 0);
+                                });
+                            }
                         }
                     }
                     break;
                 case 38: //up
-                    var $td; // 记录当前查看的td
-                    for (var i = 0; i < aTd[0].length; i++) {
-                        aMerge = [];
-                        for (var j = 0; j < aTd.length; j++) {
-                            $td = aTd[j].eq(i);
-                            if ($td.text() != '') {
-                                aMerge.push($td.children('div'));
+                    bFlag = judgeVerticalMove('up');
+                    if (bFlag) {
+                        var $td; // 记录当前查看的td
+                        for (var i = 0; i < aTd[0].length; i++) {
+                            aMerge = [];
+                            for (var j = 0; j < aTd.length; j++) {
+                                $td = aTd[j].eq(i);
+                                if ($td.text() != '') {
+                                    aMerge.push($td.children('div'));
+                                }
                             }
-                        }
 
-                        if (aMerge.length > 1) {
-                            mergeDivLongitudinal(aMerge, 0, 1, 0, 2, 'left');
-                        } else if (aMerge.length = 1) {
-                            $(aMerge[0]).animate({
-                                top: 5
-                            }, 100, function () {
-                                changeDiv($(this), 0, null);
-                            });
+                            if (aMerge.length > 1) {
+                                mergeDivLongitudinal(aMerge, 0, 1, 0, 2, 'left');
+                            } else if (aMerge.length = 1) {
+                                $(aMerge[0]).animate({
+                                    top: 5
+                                }, 100, function () {
+                                    changeDiv($(this), 0, null);
+                                });
+                            }
                         }
                     }
                     break;
                 case 39: //right
-                    for (var i = 0; i < aTd.length; i++) {
-                        aMerge = []; //需要合并元素的数组
-                        aTd[i].each(function () {
-                            if (this.innerHTML != '') {
-                                aMerge.push($(this).children('div'));
-                            }
-                        });
-
-                        if (aMerge.length > 1) {
-                            mergeDivTransverse(aMerge, aMerge.length - 2, aMerge.length - 1, aTd[0].length - 1, 2, 'right');
-                        } else if (aMerge.length = 1) {
-                            $(aMerge[0]).animate({
-                                left: 160 * (aTd[0].length - 1) + 5
-                            }, 100, function () {
-                                changeDiv($(this), null, aTd[0].length - 1);
+                    bFlag = judgeHorizonMove('right');
+                    if (bFlag) {
+                        for (var i = 0; i < aTd.length; i++) {
+                            aMerge = []; //需要合并元素的数组
+                            aTd[i].each(function () {
+                                if (this.innerHTML != '') {
+                                    aMerge.push($(this).children('div'));
+                                }
                             });
+
+                            if (aMerge.length > 1) {
+                                mergeDivTransverse(aMerge, aMerge.length - 2, aMerge.length - 1, aTd[0].length - 1, 2, 'right');
+                            } else if (aMerge.length = 1) {
+                                $(aMerge[0]).animate({
+                                    left: 160 * (aTd[0].length - 1) + 5
+                                }, 100, function () {
+                                    changeDiv($(this), null, aTd[0].length - 1);
+                                });
+                            }
                         }
                     }
                     break;
                 case 40: //down
-                    var $td; // 记录当前查看的td
-                    for (var i = 0; i < aTd[0].length; i++) {
-                        aMerge = [];
-                        for (var j = 0; j < aTd.length; j++) {
-                            $td = aTd[j].eq(i);
-                            if ($td.text() != '') {
-                                aMerge.push($td.children('div'));
+                    bFlag = judgeVerticalMove('down');
+                    if (bFlag) {
+                        var $td; // 记录当前查看的td
+                        for (var i = 0; i < aTd[0].length; i++) {
+                            aMerge = [];
+                            for (var j = 0; j < aTd.length; j++) {
+                                $td = aTd[j].eq(i);
+                                if ($td.text() != '') {
+                                    aMerge.push($td.children('div'));
+                                }
                             }
-                        }
 
-                        if (aMerge.length > 1) {
-                            mergeDivLongitudinal(aMerge, aMerge.length - 2, aMerge.length - 1, aTd.length - 1, 2, 'right');
-                        } else if (aMerge.length = 1) {
-                            $(aMerge[0]).animate({
-                                top: 160 * (aTd.length - 1) + 5
-                            }, 100, function () {
-                                changeDiv($(this), aTd.length - 1, null);
-                            });
+                            if (aMerge.length > 1) {
+                                mergeDivLongitudinal(aMerge, aMerge.length - 2, aMerge.length - 1, aTd.length - 1, 2, 'right');
+                            } else if (aMerge.length = 1) {
+                                $(aMerge[0]).animate({
+                                    top: 160 * (aTd.length - 1) + 5
+                                }, 100, function () {
+                                    changeDiv($(this), aTd.length - 1, null);
+                                });
+                            }
                         }
                     }
                     break;
@@ -120,7 +132,10 @@ $(function () {
                             type: 'win'
                         });
                     } else {
-                        new2048(iNewNumber);
+                        if (bFlag) {
+                            new2048(iNewNumber);
+                            
+                        }
                     }
                     clearInterval($container.newDivTimer);
                 }
@@ -383,5 +398,96 @@ $(function () {
                 }
             }
         }
+    }
+
+
+    /**
+     * 判断水平是否能合成
+     * 
+     * @param {string} dir 表示方块合并方向
+     * @returns true 表示能/false 表示不能
+     */
+    function judgeHorizonMove(dir) {
+
+        for (var i = 0; i < $aDiv.length; i++) {
+            var $div = $aDiv.eq(i); //获取当前元素的jq对象
+            var oDiv = $div.get(0); //获取当前元素的原生对象
+            var iDivTdIndex = $div.closest('td').index(); //获取当前元素的列数
+            var iDivTrIndex = $div.closest('tr').index(); //获取当前元素的行数
+            if (dir == 'right') {
+                //如果不是最后一个元素
+                if (iDivTdIndex != aTd[iDivTrIndex].length - 1) {
+                    //判断本元素与右侧元素内容是否一致
+                    if (aTd[iDivTrIndex].get(iDivTdIndex + 1).innerHTML == '' || oDiv.innerHTML == aTd[iDivTrIndex].get(iDivTdIndex + 1).children[0].innerHTML) {
+                        return true;
+                    }
+                }
+            } else {
+                //如果不是第一个元素
+                if (iDivTdIndex != 0) {
+                    //判断本元素与左侧元素内容是否一致
+                    if (aTd[iDivTrIndex].get(iDivTdIndex - 1).innerHTML == '' || oDiv.innerHTML == aTd[iDivTrIndex].get(iDivTdIndex - 1).children[0].innerHTML) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断垂直是否能合成
+     * 
+     * @param {string} dir 表示方块合并方向
+     * @returns true 表示能/false 表示不能
+     */
+    function judgeVerticalMove(dir) {
+        for (var i = 0; i < $aDiv.length; i++) {
+            var $div = $aDiv.eq(i); //获取当前元素的jq对象
+            var oDiv = $div.get(0); //获取当前元素的原生对象
+            var iDivTdIndex = $div.closest('td').index(); //获取当前元素的列数
+            var iDivTrIndex = $div.closest('tr').index(); //获取当前元素的行数
+            if (dir == 'down') {
+                //如果是本行不是最后一行
+                if (iDivTrIndex != aTd.length - 1) {
+                    //如果此元素与下面元素内容一致，或下面内容为空
+                    if (aTd[iDivTrIndex + 1].get(iDivTdIndex).innerHTML == '' || oDiv.innerHTML == aTd[iDivTrIndex + 1].get(iDivTdIndex).children[0].innerHTML) {
+                        return true;
+                    }
+                }
+            } else {
+                //如果是不是第一行
+                if (iDivTrIndex != 0) {
+                    //如果此元素与上面元素内容一致，或上面内容为空
+                    if (aTd[iDivTrIndex - 1].get(iDivTdIndex).innerHTML == '' || oDiv.innerHTML == aTd[iDivTrIndex - 1].get(iDivTdIndex).children[0].innerHTML) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    function judgeFull() {
+        for (var i = 0; i < aTd.length; i++) {
+            //定义一行的div的个数
+            var iRowCount = aTd[i].find('div').length;
+            if (iRowCount != 4 && iRowCount != 0) {
+                return false;
+            }
+        }
+        for (var i = 0; i < aTd[0].length; i++) {
+            //定义一列的div的个数
+            var iColCount = 0;
+            for (var j = 0; j < aTd.length; j++) {
+                if (aTd[j].get(i).innerHTML != '') {
+                    iColCount++;
+                }
+            }
+            if (iColCount != 4 && iColCount != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 });
