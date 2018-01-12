@@ -134,7 +134,16 @@ $(function () {
                     } else {
                         if (bFlag) {
                             new2048(iNewNumber);
-                            
+                            $container.loseTimer = setInterval(function () {
+                                if ($aDiv.filter(':animated').length == 0) {
+                                    $aDiv = $('div', $container);
+                                    clearInterval($container.loseTimer);
+                                    if (judgeFull() && !judgeHorizonMove('left') && !judgeHorizonMove('right') &&
+                                        !judgeVerticalMove('up') && !judgeVerticalMove('down')) {
+                                        alert('lose');
+                                    }
+                                }
+                            }, 150);
                         }
                     }
                     clearInterval($container.newDivTimer);
