@@ -14,9 +14,11 @@ $(function () {
         aTd.push($(elem).children('td')); //每个元素是一个jq对象，里面是每行的td
     });
     var $aDiv;
+    $container.bEverWon = false; //是否胜利过
 
     new2048();
-    $(document).on('keyup', function (e) {
+
+    function keyUp(e) {
         e = e || window.event;
         //如果按的是上下左右
         if (e.keyCode <= 40 && e.keyCode >= 37) {
@@ -125,12 +127,21 @@ $(function () {
             $container.newDivTimer = setInterval(function () {
                 //当没有div做动画的时候在生成新的2048方块
                 if ($aDiv.filter(':animated').length == 0) {
-                    if ($score.html() == '2048') { //若分数达到2048
+                    var bWin = false; //表示是否胜利，true表示胜利，false表示失败
+                    for (var i = 0; i < $aDiv.length; i++) {
+                        if ($aDiv.html() == '2048') {
+                            bWin = true;
+                        }
+                    }
+                    if (!$container.bEverWon && bWin) { //有元素达到2048
                         new Layout({
                             content: 'You Win!',
                             score: $score.html(),
-                            type: 'win'
+                            type: 'win',
+                            continueFn: keyUp
                         });
+                        document.onkeyup = null;
+                        $container.bEverWon = true;
                     } else {
                         if (bFlag) {
                             new2048(iNewNumber);
@@ -140,7 +151,12 @@ $(function () {
                                     clearInterval($container.loseTimer);
                                     if (judgeFull() && !judgeHorizonMove('left') && !judgeHorizonMove('right') &&
                                         !judgeVerticalMove('up') && !judgeVerticalMove('down')) {
-                                        alert('lose');
+                                        new Layout({
+                                            content: 'You Lose',
+                                            score: $score.html(),
+                                            type: 'lose'
+                                        });
+                                        document.onkeyup = null;
                                     }
                                 }
                             }, 150);
@@ -150,10 +166,18 @@ $(function () {
                 }
             }, 100);
         }
-    });
+    }
+
+    document.onkeyup = function (e) {
+        keyUp(e);
+    };
 
     //点击开始新游戏
     $newGame.on('click', function () {
+        //重置键盘点击事件
+        document.onkeyup = function (e) {
+            keyUp(e)
+        };
         //清空所有的td
         for (var i = 0; i < aTd.length; i++) {
             aTd[i].each(function () {
