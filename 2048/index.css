@@ -82,6 +82,7 @@ body {
 #container table {
     border: 5px solid #bbada0;
     background: #cdc1b4;
+    position: relative;
     border-radius: 10px;
 }
 
