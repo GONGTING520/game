@@ -28,8 +28,8 @@ $(function () {
             var aMerge = []; //需要合并元素的数组
             switch (e.keyCode) {
                 case 37: //left
-                    bFlag = judgeHorizonMove('left');
-                    if (bFlag) {
+                    $container.bFlag = judgeHorizonMove('left');
+                    if ($container.bFlag) {
                         for (var i = 0; i < aTd.length; i++) {
                             aMerge = [];
                             aTd[i].each(function () {
@@ -51,8 +51,8 @@ $(function () {
                     }
                     break;
                 case 38: //up
-                    bFlag = judgeVerticalMove('up');
-                    if (bFlag) {
+                    $container.bFlag = judgeVerticalMove('up');
+                    if ($container.bFlag) {
                         var $td; // 记录当前查看的td
                         for (var i = 0; i < aTd[0].length; i++) {
                             aMerge = [];
@@ -76,8 +76,8 @@ $(function () {
                     }
                     break;
                 case 39: //right
-                    bFlag = judgeHorizonMove('right');
-                    if (bFlag) {
+                    $container.bFlag = judgeHorizonMove('right');
+                    if ($container.bFlag) {
                         for (var i = 0; i < aTd.length; i++) {
                             aMerge = []; //需要合并元素的数组
                             aTd[i].each(function () {
@@ -99,8 +99,8 @@ $(function () {
                     }
                     break;
                 case 40: //down
-                    bFlag = judgeVerticalMove('down');
-                    if (bFlag) {
+                    $container.bFlag = judgeVerticalMove('down');
+                    if ($container.bFlag) {
                         var $td; // 记录当前查看的td
                         for (var i = 0; i < aTd[0].length; i++) {
                             aMerge = [];
@@ -124,53 +124,58 @@ $(function () {
                     }
                     break;
             }
-            $container.newDivTimer = setInterval(function () {
-                //当没有div做动画的时候在生成新的2048方块
-                if ($aDiv.filter(':animated').length == 0) {
-                    var bWin = false; //表示是否胜利，true表示胜利，false表示失败
-                    for (var i = 0; i < $aDiv.length; i++) {
-                        if ($aDiv.html() == '2048') {
-                            bWin = true;
-                        }
-                    }
-                    if (!$container.bEverWon && bWin) { //有元素达到2048
-                        new Layout({
-                            content: 'You Win!',
-                            score: $score.html(),
-                            type: 'win',
-                            continueFn: keyUp
-                        });
-                        document.onkeyup = null;
-                        $container.bEverWon = true;
-                    } else {
-                        if (bFlag) {
-                            new2048(iNewNumber);
-                            $container.loseTimer = setInterval(function () {
-                                if ($aDiv.filter(':animated').length == 0) {
-                                    $aDiv = $('div', $container);
-                                    clearInterval($container.loseTimer);
-                                    if (judgeFull() && !judgeHorizonMove('left') && !judgeHorizonMove('right') &&
-                                        !judgeVerticalMove('up') && !judgeVerticalMove('down')) {
-                                        new Layout({
-                                            content: 'You Lose',
-                                            score: $score.html(),
-                                            type: 'lose'
-                                        });
-                                        document.onkeyup = null;
-                                    }
-                                }
-                            }, 150);
-                        }
-                    }
-                    clearInterval($container.newDivTimer);
-                }
-            }, 100);
+            judgeWinAndNew();
         }
     }
 
     document.onkeyup = function (e) {
         keyUp(e);
     };
+
+    function judgeWinAndNew() {
+        setTimeout(function () {
+            //当没有div做动画的时候在生成新的2048方块
+            if ($aDiv.filter(':animated').length == 0) {
+                var bWin = false; //表示是否胜利，true表示胜利，false表示失败
+                for (var i = 0; i < $aDiv.length; i++) {
+                    if ($aDiv.html() == '2048') {
+                        bWin = true;
+                    }
+                }
+                if (!$container.bEverWon && bWin) { //有元素达到2048
+                    new Layout({
+                        content: 'You Win!',
+                        score: $score.html(),
+                        type: 'win',
+                        continueFn: keyUp
+                    });
+                    document.onkeyup = null;
+                    $container.bEverWon = true;
+                } else {
+                    if ($container.bFlag) {
+                        new2048(iNewNumber);
+                        $container.loseTimer = setInterval(function () {
+                            if ($aDiv.filter(':animated').length == 0) {
+                                $aDiv = $('div', $container);
+                                clearInterval($container.loseTimer);
+                                if (judgeFull() && !judgeHorizonMove('left') && !judgeHorizonMove('right') &&
+                                    !judgeVerticalMove('up') && !judgeVerticalMove('down')) {
+                                    new Layout({
+                                        content: 'You Lose',
+                                        score: $score.html(),
+                                        type: 'lose'
+                                    });
+                                    document.onkeyup = null;
+                                }
+                            }
+                        }, 150);
+                    }
+                }
+            } else {
+                judgeWinAndNew();
+            }
+        }, 100);
+    }
 
     //点击开始新游戏
     $newGame.on('click', function () {
